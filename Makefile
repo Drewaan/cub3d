@@ -17,8 +17,7 @@ MLX_LIB		:= $(MLX_BUILD)/libmlx42.a
 
 # **************************************************************************** #
 # FILES
-SRCS_FILES =	main.c \
-				check_utils.c \
+SRCS_FILES =	test.c \
 
 SRCS	:= $(addprefix $(SRC_DIR), $(SRCS_FILES))
 OBJS	:= $(addprefix $(OBJ_DIR), $(SRCS_FILES:.c=.o))

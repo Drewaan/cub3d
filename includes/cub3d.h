@@ -6,7 +6,7 @@
 /*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 13:23:33 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/10/17 16:44:53 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/10/21 18:26:31 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,10 @@
 #include "../libft/include/libft.h"
 #include "../MLX42/include/MLX42/MLX42.h"
 
-# define WIN_W 1152
-# define WIN_H 864
+# define WIN_W 800
+# define WIN_H 600
 # define TILE 10
+
 typedef struct s_color
 {
 	int				red;
@@ -95,7 +96,17 @@ typedef struct s_game
 	t_ray			raycast;
 }					t_game;
 
-// CHECK_UTILS
+// CHECK_UTILS =========================================================
+
 int	check_args(int argc, char**argv);
+
+// RAYCAST =========================================================
+
+void	ray_refresh(t_ray *ray, t_player *player, int x);
+void	ray_dir(t_ray *ray, t_player *player);
+void	check_hit(t_game *game);
+void	set_dist(t_game *game);
+void	raycast(t_game *game);
+
 
 #endif
