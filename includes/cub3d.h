@@ -6,7 +6,7 @@
 /*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 13:23:33 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/10/23 14:12:06 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/10/23 16:03:06 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,5 +115,11 @@ void	draw_sky_and_floor(t_game *game, int x);
 // UTILS =========================================================
 
 int	get_rgba(int r, int g, int b, int a);
+
+// HOOKS ===========================================================
+
+void	key_hook(mlx_key_data_t keydata, void *params);
+void	main_hook(void *params);
+
 
 #endif

@@ -6,13 +6,22 @@
 /*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 18:22:02 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/10/23 15:54:13 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/10/23 16:01:58 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
 void	key_hook(mlx_key_data_t keydata, void *params)
+{
+	t_game	*game;
+	game = params;
+
+	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
+		mlx_close_window(game -> mlx);
+}
+
+void	main_hook(void *params)
 {
 	t_game	*game;
 
