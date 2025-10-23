@@ -6,7 +6,7 @@
 /*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 13:23:33 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/10/21 18:26:31 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/10/23 14:12:06 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,5 +108,12 @@ void	check_hit(t_game *game);
 void	set_dist(t_game *game);
 void	raycast(t_game *game);
 
+// DRAW =========================================================
+
+void	draw_sky_and_floor(t_game *game, int x);
+
+// UTILS =========================================================
+
+int	get_rgba(int r, int g, int b, int a);
 
 #endif

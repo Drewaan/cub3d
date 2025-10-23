@@ -298,7 +298,6 @@ void set_dist(t_game *game)
 	game->raycast.wall_x -= floor(game->raycast.wall_x);
 }
 
-/* ----------------- dibujo ----------------- */
 
 static inline uint32_t rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
@@ -314,19 +313,34 @@ void draw_vertical_line(mlx_image_t *img, int x, int start, int end, uint32_t co
 		mlx_put_pixel(img, x, y, color);
 }
 
-/* ----------------- raycast principal ----------------- */
+void	draw_sky_and_floor(t_game *game, int x)
+{
+	int	y;
+
+	y = 0;
+	while (y < WIN_H / 2)
+	{
+		mlx_put_pixel(game -> img, x, y, game -> textures.ceiling_color);
+		y++;
+	}
+	while (y < WIN_H)
+	{
+		mlx_put_pixel(game -> img, x, y, game -> textures.floor_color);
+		y++;
+	}
+}
+
+
 
 void raycast_frame(t_game *game)
 {
 	int x;
 
-	/* recreamos la imagen cada frame (simple) */
 	if (game->img)
 		mlx_delete_image(game->mlx, game->img);
 	game->img = mlx_new_image(game->mlx, WIN_W, WIN_H);
 	mlx_image_to_window(game->mlx, game->img, 0, 0);
 
-	/* fondo (césped/ceiling) opcional: aquí suelo oscuro y techo claro */
 	for (int y = 0; y < WIN_H / 2; ++y) {
 		for (int x2 = 0; x2 < WIN_W; ++x2)
 			mlx_put_pixel(game->img, x2, y, rgba(120, 180, 255, 255)); /* cielo */
@@ -343,6 +357,7 @@ void raycast_frame(t_game *game)
 		ray_dir(&game->raycast, &game->player);
 		check_hit(game);
 		set_dist(game);
+		draw_sky_and_floor(game, x);
 
 		int line_height = (int)(WIN_H / game->raycast.wall_dist);
 		int draw_start = -line_height / 2 + WIN_H / 2;
@@ -394,19 +409,18 @@ int main(void)
 	t_game game;
 	int i;
 
-	/* cargar mapa */
-	game.map.win_h = 10; /* filas */
-	game.map.win_w = 24; /* columnas */
+	game.map.win_h = 10;
+	game.map.win_w = 24;
 	game.map.map_array = malloc(sizeof(char *) * (game.map.win_h + 1));
 	if (!game.map.map_array) return perror("malloc"), 1;
 	i = 0;
-	while (map_data[i]) {
+	while (map_data[i])
+	{
 		game.map.map_array[i] = map_data[i];
 		i++;
 	}
 	game.map.map_array[i] = NULL;
 
-	/* init MLX */
 	game.mlx = mlx_init(WIN_W, WIN_H, "Raycaster MLX42 - FIXED", false);
 	if (!game.mlx) {
 		fprintf(stderr, "Error inicializando MLX42\n");
@@ -414,8 +428,7 @@ int main(void)
 	}
 	game.img = NULL;
 
-	/* colocar al jugador dentro del mapa */
-	game.player.pos_x = 3.5;   /* dentro del área abierta */
+	game.player.pos_x = 3.5;
 	game.player.pos_y = 3.5;
 	game.player.dir_x = -1.0;
 	game.player.dir_y = 0.0;
@@ -424,11 +437,9 @@ int main(void)
 	game.player.speed = 5.0;
 	game.player.rotate_speed = 3.0;
 
-	/* loop hook: siempre que mlx ejecute el loop, llamamos a render */
 	mlx_loop_hook(game.mlx, (void *)raycast_frame, &game);
 	mlx_loop(game.mlx);
 
-	/* cleanup */
 	if (game.img) mlx_delete_image(game.mlx, game.img);
 	mlx_terminate(game.mlx);
 	free(game.map.map_array);

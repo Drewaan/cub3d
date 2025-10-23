@@ -6,12 +6,11 @@
 /*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 14:13:36 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/10/21 18:25:12 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/10/21 19:01:53 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-
 
 void	ray_refresh(t_ray *ray, t_player *player, int x)
 {
@@ -22,9 +21,9 @@ void	ray_refresh(t_ray *ray, t_player *player, int x)
 	ray -> map_x = player -> dir_x + player -> plane_x + ray -> camera;
 	ray -> map_y = player -> dir_y + player -> plane_y + ray -> camera;
 	ray -> delta_dist_x = sqrt(1 + (ray -> ray_y * ray -> ray_y) / (ray -> ray_x
-					* ray -> ray_x));
+				* ray -> ray_x));
 	ray -> delta_dist_y = sqrt(1 + (ray -> ray_x * ray -> ray_x) / (ray -> ray_y
-					* ray -> ray_y));
+				* ray -> ray_y));
 }
 
 void	ray_dir(t_ray *ray, t_player *player)
@@ -73,7 +72,7 @@ void	check_hit(t_game *game)
 		{
 			if (game->map.map_array[game->raycast.map_y][game->raycast.map_x] \
 				== '1')
-			game -> raycast.hit = 1;
+				game -> raycast.hit = 1;
 		}
 	}
 }
@@ -100,7 +99,7 @@ void	set_dist(t_game *game)
 
 void	raycast(t_game *game)
 {
-	int x;
+	int	x;
 
 	x = 0;
 	while (x < WIN_W)
@@ -109,6 +108,7 @@ void	raycast(t_game *game)
 		ray_dir(&game -> raycast, &game -> player);
 		check_hit(game);
 		set_dist(game);
+		draw_sky_and_floor(game, x);
 		x++;
 	}
 }
