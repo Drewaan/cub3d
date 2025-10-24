@@ -208,6 +208,21 @@ int main(void)
     return 0;
 } */
 
+static inline uint32_t rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+{
+	return ((uint32_t)r << 24) | ((uint32_t)g << 16) | ((uint32_t)b << 8) | (uint32_t)a;
+}
+
+void draw_vertical_line(mlx_image_t *img, int x, int start, int end, uint32_t color)
+{
+	if (x < 0 || x >= WIN_W) return;
+	if (start < 0) start = 0;
+	if (end >= WIN_H) end = WIN_H - 1;
+	for (int y = start; y <= end; ++y)
+		mlx_put_pixel(img, x, y, color);
+}
+
+/* Raycasting */
 void ray_refresh(t_ray *ray, t_player *player, int x)
 {
 	ray->hit = 0;
@@ -216,7 +231,6 @@ void ray_refresh(t_ray *ray, t_player *player, int x)
 	ray->camera = 2 * x / (double)WIN_W - 1.0;
 	ray->ray_x = player->dir_x + player->plane_x * ray->camera;
 	ray->ray_y = player->dir_y + player->plane_y * ray->camera;
-	/* cálculo seguro de delta_dist: evita divisiones por 0 */
 	ray->delta_dist_x = (ray->ray_x == 0.0) ? 1e30 : fabs(1.0 / ray->ray_x);
 	ray->delta_dist_y = (ray->ray_y == 0.0) ? 1e30 : fabs(1.0 / ray->ray_y);
 }
@@ -247,8 +261,8 @@ void ray_dir(t_ray *ray, t_player *player)
 
 void check_hit(t_game *game)
 {
-	int max_y = game->map.win_h;
-	int max_x = game->map.win_w;
+	int max_y = game->map.map_h;
+	int max_x = game->map.map_w;
 
 	while (game->raycast.hit == 0)
 	{
@@ -264,20 +278,17 @@ void check_hit(t_game *game)
 			game->raycast.map_y += game->raycast.step_y;
 			game->raycast.side_hit = 1;
 		}
-		/* verificación de límites del mapa */
 		if (game->raycast.map_x < 0 || game->raycast.map_x >= max_x
 			|| game->raycast.map_y < 0 || game->raycast.map_y >= max_y)
 		{
-			game->raycast.hit = 1; /* fuera del mapa -> interrumpir */
+			game->raycast.hit = 1;
 			break;
 		}
-		/* mapa: '1' son paredes */
 		if (game->map.map_array[game->raycast.map_y][game->raycast.map_x] == '1')
 			game->raycast.hit = 1;
 	}
 }
 
-/* Usamos la forma segura: perpWallDist = sideDist - deltaDist */
 void set_dist(t_game *game)
 {
 	if (game->raycast.side_hit == 0)
@@ -285,71 +296,40 @@ void set_dist(t_game *game)
 	else
 		game->raycast.wall_dist = game->raycast.side_dist_y - game->raycast.delta_dist_y;
 
-	/* evitar distancias 0 o negativas */
 	if (game->raycast.wall_dist <= 0.0001)
 		game->raycast.wall_dist = 0.0001;
 
-	/* calcular el punto exacto de impacto (para texturizado si se desea) */
 	if (game->raycast.side_hit == 0)
 		game->raycast.wall_x = game->player.pos_y + game->raycast.wall_dist * game->raycast.ray_y;
 	else
 		game->raycast.wall_x = game->player.pos_x + game->raycast.wall_dist * game->raycast.ray_x;
-	/* wall_x en [0,1) */
 	game->raycast.wall_x -= floor(game->raycast.wall_x);
 }
-
-
-static inline uint32_t rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
-{
-	return ((uint32_t)a << 24) | ((uint32_t)r << 16) | ((uint32_t)g << 8) | (uint32_t)b;
-}
-
-void draw_vertical_line(mlx_image_t *img, int x, int start, int end, uint32_t color)
-{
-	if (x < 0 || x >= WIN_W) return;
-	if (start < 0) start = 0;
-	if (end >= WIN_H) end = WIN_H - 1;
-	for (int y = start; y <= end; ++y)
-		mlx_put_pixel(img, x, y, color);
-}
-
-void	draw_sky_and_floor(t_game *game, int x)
-{
-	int	y;
-
-	y = 0;
-	while (y < WIN_H / 2)
-	{
-		mlx_put_pixel(game -> img, x, y, game -> textures.ceiling_color);
-		y++;
-	}
-	while (y < WIN_H)
-	{
-		mlx_put_pixel(game -> img, x, y, game -> textures.floor_color);
-		y++;
-	}
-}
-
-
 
 void raycast_frame(t_game *game)
 {
 	int x;
-
+	
 	if (game->img)
 		mlx_delete_image(game->mlx, game->img);
 	game->img = mlx_new_image(game->mlx, WIN_W, WIN_H);
 	mlx_image_to_window(game->mlx, game->img, 0, 0);
-
-	for (int y = 0; y < WIN_H / 2; ++y) {
-		for (int x2 = 0; x2 < WIN_W; ++x2)
-			mlx_put_pixel(game->img, x2, y, rgba(120, 180, 255, 255)); /* cielo */
+	
+	// Dibujar cielo
+	for (int y = 0; y < WIN_H / 2; y++)
+	{
+		for (int x2 = 0; x2 < WIN_W; x2++)
+			mlx_put_pixel(game->img, x2, y, rgba(120, 180, 255, 255));
 	}
-	for (int y = WIN_H/2; y < WIN_H; ++y) {
-		for (int x2 = 0; x2 < WIN_W; ++x2)
-			mlx_put_pixel(game->img, x2, y, rgba(80, 80, 80, 255)); /* suelo */
+	
+	// Dibujar suelo
+	for (int y = WIN_H / 2; y < WIN_H; y++)
+	{
+		for (int x2 = 0; x2 < WIN_W; x2++)
+			mlx_put_pixel(game->img, x2, y, rgba(80, 80, 80, 255));
 	}
-
+	
+	// Raycast para cada columna
 	x = 0;
 	while (x < WIN_W)
 	{
@@ -357,39 +337,131 @@ void raycast_frame(t_game *game)
 		ray_dir(&game->raycast, &game->player);
 		check_hit(game);
 		set_dist(game);
-		draw_sky_and_floor(game, x);
-
+		
 		int line_height = (int)(WIN_H / game->raycast.wall_dist);
 		int draw_start = -line_height / 2 + WIN_H / 2;
 		int draw_end = line_height / 2 + WIN_H / 2;
-
-		/* elegir color según side y mapa (puedes extender por tipo de muro) */
-		uint32_t color;
-		char tile = '0';
-		if (game->raycast.map_x >= 0 && game->raycast.map_x < game->map.win_w
-			&& game->raycast.map_y >= 0 && game->raycast.map_y < game->map.win_h)
-			tile = game->map.map_array[game->raycast.map_y][game->raycast.map_x];
-
-		switch (tile)
+		
+		if (draw_start < 0)
+			draw_start = 0;
+		if (draw_end >= WIN_H)
+			draw_end = WIN_H - 1;
+		
+		uint32_t color = rgba(220, 220, 220, 255);
+		
+		if (game->raycast.map_x >= 0 && game->raycast.map_x < game->map.map_w
+			&& game->raycast.map_y >= 0 && game->raycast.map_y < game->map.map_h)
 		{
-			case '1': color = rgba(200, 40, 40, 255); break; /* rojo */
-			default:  color = rgba(220, 220, 220, 255); break;
+			char tile = game->map.map_array[game->raycast.map_y][game->raycast.map_x];
+			
+			if (tile == '1')
+				color = rgba(200, 40, 40, 255);
 		}
-		if (game->raycast.side_hit == 1) {
-			/* oscurecer para dar profundidad */
-			uint8_t r = (color >> 16) & 0xFF;
-			uint8_t g = (color >> 8) & 0xFF;
-			uint8_t b = color & 0xFF;
-			color = rgba(r/2, g/2, b/2, 255);
+		
+		// Oscurecer paredes verticales
+		if (game->raycast.side_hit == 1)
+		{
+			uint8_t r = (color >> 24) & 0xFF;
+			uint8_t g = (color >> 16) & 0xFF;
+			uint8_t b = (color >> 8) & 0xFF;
+			uint8_t a = color & 0xFF;
+			color = rgba(r / 2, g / 2, b / 2, a);
 		}
-
+		
 		draw_vertical_line(game->img, x, draw_start, draw_end, color);
 		x++;
 	}
 }
 
-/* ----------------- mapa de prueba y main ----------------- */
+/* Movimiento */
+void move_forward(t_game *game)
+{
+	double newposx = game->player.pos_x + game->player.dir_x * game->player.speed;
+	double newposy = game->player.pos_y + game->player.dir_y * game->player.speed;
+	double margin = 0.2;
+	
+	if (game->map.map_array[(int)game->player.pos_y][(int)(newposx + game->player.dir_x * margin)] != '1')
+		game->player.pos_x = newposx;
+	if (game->map.map_array[(int)(newposy + game->player.dir_y * margin)][(int)game->player.pos_x] != '1')
+		game->player.pos_y = newposy;
+}
 
+void move_backward(t_game *game)
+{
+	double newposx = game->player.pos_x - game->player.dir_x * game->player.speed;
+	double newposy = game->player.pos_y - game->player.dir_y * game->player.speed;
+	double margin = 0.2;
+	
+	if (game->map.map_array[(int)game->player.pos_y][(int)(newposx - game->player.dir_x * margin)] != '1')
+		game->player.pos_x = newposx;
+	if (game->map.map_array[(int)(newposy - game->player.dir_y * margin)][(int)game->player.pos_x] != '1')
+		game->player.pos_y = newposy;
+}
+
+void move_right(t_game *game)
+{
+	double newposx = game->player.pos_x + game->player.plane_x * game->player.speed;
+	double newposy = game->player.pos_y + game->player.plane_y * game->player.speed;
+	double margin = 0.2;
+	
+	if (game->map.map_array[(int)game->player.pos_y][(int)(newposx + game->player.plane_x * margin)] != '1')
+		game->player.pos_x = newposx;
+	if (game->map.map_array[(int)(newposy + game->player.plane_y * margin)][(int)game->player.pos_x] != '1')
+		game->player.pos_y = newposy;
+}
+
+void move_left(t_game *game)
+{
+	double newposx = game->player.pos_x - game->player.plane_x * game->player.speed;
+	double newposy = game->player.pos_y - game->player.plane_y * game->player.speed;
+	double margin = 0.2;
+	
+	if (game->map.map_array[(int)game->player.pos_y][(int)(newposx - game->player.plane_x * margin)] != '1')
+		game->player.pos_x = newposx;
+	if (game->map.map_array[(int)(newposy - game->player.plane_y * margin)][(int)game->player.pos_x] != '1')
+		game->player.pos_y = newposy;
+}
+
+void rotate(t_player *player, float angle)
+{
+	double old_dir_x = player->dir_x;
+	double old_plane_x = player->plane_x;
+	
+	player->dir_x = player->dir_x * cos(angle) - player->dir_y * sin(angle);
+	player->dir_y = old_dir_x * sin(angle) + player->dir_y * cos(angle);
+	player->plane_x = player->plane_x * cos(angle) - player->plane_y * sin(angle);
+	player->plane_y = old_plane_x * sin(angle) + player->plane_y * cos(angle);
+}
+
+/* Hooks */
+void key_hook(mlx_key_data_t keydata, void *params)
+{
+	t_game *game = params;
+	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
+		mlx_close_window(game->mlx);
+}
+
+void main_hook(void *params)
+{
+	t_game *game = (t_game *)params;
+
+	if (mlx_is_key_down(game->mlx, MLX_KEY_A))
+		move_left(game);
+	if (mlx_is_key_down(game->mlx, MLX_KEY_D))
+		move_right(game);
+	if (mlx_is_key_down(game->mlx, MLX_KEY_W))
+		move_forward(game);
+	if (mlx_is_key_down(game->mlx, MLX_KEY_S))
+		move_backward(game);
+	if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT))
+		rotate(&game->player, game->player.rotate_speed);
+	if (mlx_is_key_down(game->mlx, MLX_KEY_RIGHT))
+		rotate(&game->player, -game->player.rotate_speed);
+	
+	raycast_frame(game);
+}
+
+/* Mapa de prueba y main */
 char *map_data[] = {
 	"111111111111111111111111",
 	"100000000011000000000001",
@@ -408,11 +480,13 @@ int main(void)
 {
 	t_game game;
 	int i;
-
-	game.map.win_h = 10;
-	game.map.win_w = 24;
-	game.map.map_array = malloc(sizeof(char *) * (game.map.win_h + 1));
-	if (!game.map.map_array) return perror("malloc"), 1;
+	
+	game.map.map_h = 10;
+	game.map.map_w = 24;
+	game.map.map_array = malloc(sizeof(char *) * (game.map.map_h + 1));
+	if (!game.map.map_array)
+		return perror("malloc"), 1;
+	
 	i = 0;
 	while (map_data[i])
 	{
@@ -420,29 +494,50 @@ int main(void)
 		i++;
 	}
 	game.map.map_array[i] = NULL;
-
+	
 	game.mlx = mlx_init(WIN_W, WIN_H, "Raycaster MLX42 - FIXED", false);
-	if (!game.mlx) {
-		fprintf(stderr, "Error inicializando MLX42\n");
-		return 1;
-	}
+	if (!game.mlx)
+		return fprintf(stderr, "Error inicializando MLX42\n"), 1;
+	
 	game.img = NULL;
-
+	
 	game.player.pos_x = 3.5;
 	game.player.pos_y = 3.5;
 	game.player.dir_x = -1.0;
 	game.player.dir_y = 0.0;
 	game.player.plane_x = 0.0;
-	game.player.plane_y = 0.66;
-	game.player.speed = 5.0;
-	game.player.rotate_speed = 3.0;
-
-	mlx_loop_hook(game.mlx, (void *)raycast_frame, &game);
+	game.player.plane_y = 0.866;
+	game.player.speed = 0.1;
+	game.player.rotate_speed = 0.05;
+	
+	mlx_loop_hook(game.mlx, main_hook, &game);
+	mlx_key_hook(game.mlx, key_hook, &game);
 	mlx_loop(game.mlx);
 
-	if (game.img) mlx_delete_image(game.mlx, game.img);
+	if (game.img)
+		mlx_delete_image(game.mlx, game.img);
 	mlx_terminate(game.mlx);
 	free(game.map.map_array);
+	
 	return 0;
 }
 
+
+int	main(int argc, char **argv)
+{
+	t_game	game;
+
+	if (!check_args(argc, argv))
+		exit(EXIT_FAILURE);
+	parse_and_check(&game, argv[1]);
+	game.mlx = mlx_init(WIN_W, WIN_H, "cub3D", true);
+	game.img = mlx_new_image(game.mlx, WIN_W, WIN_H);
+	mlx_image_to_window(game.mlx, game.img, 0, 0);
+	mlx_loop_hook(game.mlx, main_hook, &game);
+	mlx_key_hook(game.mlx, key_hook, &game);
+	mlx_loop(game.mlx);
+	game_over(&game);
+	mlx_delete_image(game.mlx, game.img);
+	mlx_terminate(game.mlx);
+	return (0);
+}
