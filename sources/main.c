@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 13:23:40 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/10/24 16:54:44 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/11/16 14:02:37 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	parse_and_check(t_game *game, char *file)
 	free_data(&data);
 }
 
-int	main(int argc, char **argv)
+/* int	main(int argc, char **argv)
 {
 	t_game	game;
 
@@ -42,3 +42,4 @@ int	main(int argc, char **argv)
 	mlx_terminate(game.mlx);
 	return (0);
 }
+ */
