@@ -507,7 +507,7 @@ int main(void)
 	game.player.dir_y = 0.0;
 	game.player.plane_x = 0.0;
 	game.player.plane_y = 0.866;
-	game.player.speed = 0.1;
+	game.player.speed = 0.3;
 	game.player.rotate_speed = 0.05;
 	
 	mlx_loop_hook(game.mlx, main_hook, &game);
@@ -520,24 +520,4 @@ int main(void)
 	free(game.map.map_array);
 	
 	return 0;
-}
-
-
-int	main(int argc, char **argv)
-{
-	t_game	game;
-
-	if (!check_args(argc, argv))
-		exit(EXIT_FAILURE);
-	parse_and_check(&game, argv[1]);
-	game.mlx = mlx_init(WIN_W, WIN_H, "cub3D", true);
-	game.img = mlx_new_image(game.mlx, WIN_W, WIN_H);
-	mlx_image_to_window(game.mlx, game.img, 0, 0);
-	mlx_loop_hook(game.mlx, main_hook, &game);
-	mlx_key_hook(game.mlx, key_hook, &game);
-	mlx_loop(game.mlx);
-	game_over(&game);
-	mlx_delete_image(game.mlx, game.img);
-	mlx_terminate(game.mlx);
-	return (0);
 }

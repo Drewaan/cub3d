@@ -6,7 +6,7 @@
 /*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 13:23:33 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/10/24 20:46:30 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/10/24 20:48:45 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,3 +165,17 @@ t_color	get_texture_pixel(mlx_texture_t *texture, int x, int y);
 // checar si es espacio, checar el jugador, checar el jugador duplicado, cargar las texturas,
 // checar que el mapa tenga colores, checar la data, checar los chars del mapa(10WSEO).
 
+// check map
+// chek utisl
+// checkers
+// controls ++
+// draw ++
+// free utils ++
+// hooks ++
+// initialize
+// main
+// parser utils
+// parser
+// raycast ++
+// texture
+// utils
