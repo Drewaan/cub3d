@@ -367,7 +367,6 @@ void raycast_frame(t_game *game)
 			uint8_t a = color & 0xFF;
 			color = rgba(r / 2, g / 2, b / 2, a);
 		}
-		
 		draw_vertical_line(game->img, x, draw_start, draw_end, color);
 		x++;
 	}
@@ -507,7 +506,7 @@ int main(void)
 	game.player.dir_y = 0.0;
 	game.player.plane_x = 0.0;
 	game.player.plane_y = 0.866;
-	game.player.speed = 0.1;
+	game.player.speed = 0.3;
 	game.player.rotate_speed = 0.05;
 	
 	mlx_loop_hook(game.mlx, main_hook, &game);
@@ -523,7 +522,7 @@ int main(void)
 }
 
 
-int	main(int argc, char **argv)
+/* int	main(int argc, char **argv)
 {
 	t_game	game;
 
@@ -541,3 +540,4 @@ int	main(int argc, char **argv)
 	mlx_terminate(game.mlx);
 	return (0);
 }
+ */

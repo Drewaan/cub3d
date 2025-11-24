@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 13:23:33 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/10/24 20:46:30 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/11/24 19:44:12 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
-#include "../libft/include/libft.h"
-#include "../MLX42/include/MLX42/MLX42.h"
+# include "../MLX42/include/MLX42/MLX42.h"
+# include "../libft/include/libft.h"
 
 # define WIN_W 800
 # define WIN_H 600
@@ -26,7 +26,7 @@ typedef struct s_color
 	int				green;
 	int				blue;
 	int				alpha;
-}	t_color;
+}					t_color;
 
 typedef struct s_data
 {
@@ -38,7 +38,7 @@ typedef struct s_data
 	t_color			ceiling;
 	int				map_start;
 	int				map_lines;
-}	t_data;
+}					t_data;
 
 typedef struct s_player
 {
@@ -50,14 +50,14 @@ typedef struct s_player
 	double			plane_y;
 	double			speed;
 	double			rotate_speed;
-}	t_player;
+}					t_player;
 
 typedef struct s_map
 {
 	char			**map_array;
 	int				map_w;
 	int				map_h;
-}	t_map;
+}					t_map;
 
 typedef struct s_wall_tex
 {
@@ -66,7 +66,7 @@ typedef struct s_wall_tex
 	int				text_y;
 	double			tex_pos;
 	double			tex_step;
-}	t_wall_tex;
+}					t_wall_tex;
 
 typedef struct s_texture
 {
@@ -76,7 +76,7 @@ typedef struct s_texture
 	mlx_texture_t	*east;
 	int				floor_color;
 	int				ceiling_color;
-}	t_texture;
+}					t_texture;
 
 typedef struct s_ray
 {
@@ -95,7 +95,7 @@ typedef struct s_ray
 	int				step_y;
 	int				hit;
 	int				side_hit;
-}	t_ray;
+}					t_ray;
 
 typedef struct s_game
 {
@@ -110,58 +110,65 @@ typedef struct s_game
 
 // CHECK_UTILS =========================================================
 
-int		check_args(int argc, char**argv);
+int					check_args(int argc, char **argv);
 
 // RAYCAST =========================================================
 
-void	ray_refresh(t_ray *ray, t_player *player, int x);
-void	ray_dir(t_ray *ray, t_player *player);
-void	check_hit(t_game *game);
-void	set_dist(t_game *game);
-void	raycast(t_game *game);
+void				ray_refresh(t_ray *ray, t_player *player, int x);
+void				ray_dir(t_ray *ray, t_player *player);
+void				check_hit(t_game *game);
+void				set_dist(t_game *game);
+void				raycast(t_game *game);
 
 // DRAW =========================================================
 
-void	draw_sky_and_floor(t_game *game, int x);
+void				draw_sky_and_floor(t_game *game, int x);
 
 // UTILS =========================================================
 
-int		get_rgba(int r, int g, int b, int a);
+int					get_rgba(int r, int g, int b, int a);
 
 // HOOKS ===========================================================
 
-void	key_hook(mlx_key_data_t keydata, void *params);
-void	main_hook(void *params);
+void				key_hook(mlx_key_data_t keydata, void *params);
+void				main_hook(void *params);
 
 // CONTROLS =============================================================
 
-void	move_forward(t_game *game);
-void	move_backward(t_game *game);
-void	move_right(t_game *game);
-void	move_left(t_game *game);
-void	rotate(t_player *player, float angle);
+void				move_forward(t_game *game);
+void				move_backward(t_game *game);
+void				move_right(t_game *game);
+void				move_left(t_game *game);
+void				rotate(t_player *player, float angle);
 
 // FREE_UTILS =========================================================
 
-void	game_over(t_game *game);
-void	free_data(t_data *data);
+void				game_over(t_game *game);
+void				free_data(t_data *data);
 
 // DRAW =========================================================
 
-void	draw_sky_and_floor(t_game *game, int x);
-int		dim_color(t_color *color, double dist);
-void	draw_stripe(t_game *game, int x, int start, int end);
-void	get_wall_height(t_game *game, int x);
+void				draw_sky_and_floor(t_game *game, int x);
+int					dim_color(t_color *color, double dist);
+void				draw_stripe(t_game *game, int x, int start, int end);
+void				get_wall_height(t_game *game, int x);
 
 // DRAW =========================================================
 
-t_color	get_texture_pixel(mlx_texture_t *texture, int x, int y);
+t_color				get_texture_pixel(mlx_texture_t *texture, int x, int y);
 
+// PARSING ======================================================
+void				parse_file(t_data *d, char *path);
+void				check_file_extension(char *path);
+void				check_identifiers(t_data *d);
+void				load_map(t_data *d, char **lines);
+void				check_map(t_data *d);
+void				load_textures(t_data *d);
+void				init_player(t_data *d);
+char				**read_file_to_array(char *path);
+char				**dup_map(t_data *d);
+void				free_map(char **m);
+void				error_exit(char *msg);
+void				parse_color(t_color *c, char *str);
 
 #endif
-
-// funciones del parseo = data del mapa, si un color es valido,  checar el mapa y sus puntos, 
-// parseo de texturas, parseo del mapa, setear el plano, setear la direccion, geth path,
-// checar si es espacio, checar el jugador, checar el jugador duplicado, cargar las texturas,
-// checar que el mapa tenga colores, checar la data, checar los chars del mapa(10WSEO).
-
