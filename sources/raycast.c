@@ -6,7 +6,7 @@
 /*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 14:13:36 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/10/21 19:01:53 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/11/24 18:32:00 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ void	raycast(t_game *game)
 		check_hit(game);
 		set_dist(game);
 		draw_sky_and_floor(game, x);
+		get_wall_height(game, x);
 		x++;
 	}
 }

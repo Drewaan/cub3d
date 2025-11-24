@@ -6,7 +6,7 @@
 /*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 13:23:33 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/10/24 20:48:45 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/11/24 19:50:34 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 #include "../libft/include/libft.h"
 #include "../MLX42/include/MLX42/MLX42.h"
 
-# define WIN_W 800
-# define WIN_H 600
+# define WIN_W 1366
+# define WIN_H 768
 # define TILE 10
 
 typedef struct s_color
@@ -62,8 +62,8 @@ typedef struct s_map
 typedef struct s_wall_tex
 {
 	mlx_texture_t	*tex;
-	int				text_x;
-	int				text_y;
+	int				tex_x;
+	int				tex_y;
 	double			tex_pos;
 	double			tex_step;
 }	t_wall_tex;
@@ -120,10 +120,6 @@ void	check_hit(t_game *game);
 void	set_dist(t_game *game);
 void	raycast(t_game *game);
 
-// DRAW =========================================================
-
-void	draw_sky_and_floor(t_game *game, int x);
-
 // UTILS =========================================================
 
 int		get_rgba(int r, int g, int b, int a);
@@ -153,29 +149,16 @@ int		dim_color(t_color *color, double dist);
 void	draw_stripe(t_game *game, int x, int start, int end);
 void	get_wall_height(t_game *game, int x);
 
-// DRAW =========================================================
+// TEXTURE =========================================================
 
 t_color	get_texture_pixel(mlx_texture_t *texture, int x, int y);
+void	get_wall_texture(t_game *game);
+void	set_tex_params(t_wall_tex *wall_tex, t_ray *ray);
+
+// INITIALIZE =======================================================
+
+void	data_init(t_data *data);
 
 
 #endif
 
-// funciones del parseo = data del mapa, si un color es valido,  checar el mapa y sus puntos, 
-// parseo de texturas, parseo del mapa, setear el plano, setear la direccion, geth path,
-// checar si es espacio, checar el jugador, checar el jugador duplicado, cargar las texturas,
-// checar que el mapa tenga colores, checar la data, checar los chars del mapa(10WSEO).
-
-// check map
-// chek utisl
-// checkers
-// controls ++
-// draw ++
-// free utils ++
-// hooks ++
-// initialize
-// main
-// parser utils
-// parser
-// raycast ++
-// texture
-// utils

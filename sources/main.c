@@ -6,7 +6,7 @@
 /*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 13:23:40 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/10/24 16:54:44 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/11/24 19:50:02 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	parse_and_check(t_game *game, char *file)
 {
 	t_data	data;
 	char	*line;
-	int 	lines;
+	int		lines;
 	int		fd;
 
 	data_init(&data);
