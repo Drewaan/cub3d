@@ -1,24 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   error_exit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/21 19:39:30 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/10/21 19:41:19 by aamaya-g         ###   ########.fr       */
+/*   Created: 2025/11/24 19:37:24 by vlorenzo          #+#    #+#             */
+/*   Updated: 2025/11/24 19:39:38 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-int	get_rgba(int r, int g, int b, int a)
+void	error_exit(char *msg)
 {
-	return (r << 24 | g << 16 | b << 8 | a);
-}
-
-int	valid_char(char c)
-{
-	return (c == '0' || c == '1' || c == 'N' || c == 'S' || c == 'E'
-		|| c == 'W');
+	ft_putendl_fd("Error", 2);
+	ft_putendl_fd(msg, 2);
+	exit(1);
 }

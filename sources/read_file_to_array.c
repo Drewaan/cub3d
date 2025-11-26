@@ -1,40 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_utils.c                                      :+:      :+:    :+:   */
+/*   read_file_to_array.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/17 16:40:44 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/11/24 19:10:59 by vlorenzo         ###   ########.fr       */
+/*   Created: 2025/11/24 19:34:42 by vlorenzo          #+#    #+#             */
+/*   Updated: 2025/11/24 19:34:50 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-int	check_args(int argc, char **argv)
+char	**read_file_to_array(char *path)
 {
-	char	*tmp;
 	int		fd;
+	char	*line;
+	char	*accum;
+	char	**out;
+	char	*tmp;
 
-	if (argc != 2)
+	fd = open(path, O_RDONLY);
+	if (fd < 0)
+		error_exit("Cannot open .cub file");
+	accum = NULL;
+	line = get_next_line(fd);
+	while (line)
 	{
-		ft_putendl_fd("Error: invalid arguments number", 2);
-		return (0);
-	}
-	tmp = ft_strnstr(argv[1], ".cub", ft_strlen(argv[1]));
-	if (tmp == NULL)
-	{
-		ft_putendl_fd("Error: invalid map", 2);
-		return (0);
-	}
-	fd = open(argv[1], O_RDONLY);
-	if (fd == -1)
-	{
-		ft_putendl_fd("Error: invalid archive format", 2);
-		close(fd);
-		return (0);
+		tmp = ft_strjoin(accum, line);
+		free(accum);
+		accum = tmp;
+		free(line);
+		line = get_next_line(fd);
 	}
 	close(fd);
-	return (1);
+	if (!accum)
+		error_exit("Empty .cub file");
+	out = ft_split(accum, '\n');
+	free(accum);
+	return (out);
 }

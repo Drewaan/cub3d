@@ -108,26 +108,19 @@ typedef struct s_game
 	t_ray			raycast;
 }					t_game;
 
+// CHECK_FILE =========================================================
+
+void	check_file_extension(char *p);
+void	check_identifiers(t_data *d);
+void	check_map(t_data *d);
+
+// CHECK_MAP =========================================================
+
+void	locate_player(t_game *game);
+
 // CHECK_UTILS =========================================================
 
 int		check_args(int argc, char**argv);
-
-// RAYCAST =========================================================
-
-void	ray_refresh(t_ray *ray, t_player *player, int x);
-void	ray_dir(t_ray *ray, t_player *player);
-void	check_hit(t_game *game);
-void	set_dist(t_game *game);
-void	raycast(t_game *game);
-
-// UTILS =========================================================
-
-int		get_rgba(int r, int g, int b, int a);
-
-// HOOKS ===========================================================
-
-void	key_hook(mlx_key_data_t keydata, void *params);
-void	main_hook(void *params);
 
 // CONTROLS =============================================================
 
@@ -137,11 +130,6 @@ void	move_right(t_game *game);
 void	move_left(t_game *game);
 void	rotate(t_player *player, float angle);
 
-// FREE_UTILS =========================================================
-
-void	game_over(t_game *game);
-void	free_data(t_data *data);
-
 // DRAW =========================================================
 
 void	draw_sky_and_floor(t_game *game, int x);
@@ -149,15 +137,66 @@ int		dim_color(t_color *color, double dist);
 void	draw_stripe(t_game *game, int x, int start, int end);
 void	get_wall_height(t_game *game, int x);
 
+// DUP_MAP =========================================================
+
+char	**dup_map(t_data *d);
+
+// FREE_UTILS =========================================================
+
+void	game_over(t_game *game);
+void	free_data(t_data *data);
+
+// HOOKS ===========================================================
+
+void	key_hook(mlx_key_data_t keydata, void *params);
+void	main_hook(void *params);
+
+// INITIALIZE =======================================================
+
+void	data_init(t_data *data);
+void	set_plane(t_player *player, char dir);
+void	set_dir(t_player *player, char dir);
+
+// MAP_LOADER =======================================================
+void	load_map(t_map *map, char **ls);
+
+// PARSE_COLOR =======================================================
+
+void	parse_color(t_color *c, char *s);
+
+// PARSER =========================================================
+
+void	parse_file(t_data *d, char *path);
+
+// ERROR_EXIT =========================================================
+
+void	error_exit(char *msg);
+
+// RAYCAST =========================================================
+
+void	ray_refresh(t_ray *ray, t_player *player, int x);
+void	ray_dir(t_ray *ray, t_player *player);
+void	check_hit(t_game *game);
+void	set_dist(t_game *game);
+void	raycast(t_game *game);
+
+// READ_FILE_TO_ARRAY =========================================================
+
+char	**read_file_to_array(char *path);
+
+// TEXTURE_LOADER =========================================================
+
+void	load_textures(t_game *game, t_data *d);
+
 // TEXTURE =========================================================
 
 t_color	get_texture_pixel(mlx_texture_t *texture, int x, int y);
 void	get_wall_texture(t_game *game);
 void	set_tex_params(t_wall_tex *wall_tex, t_ray *ray);
+// UTILS =========================================================
 
-// INITIALIZE =======================================================
-
-void	data_init(t_data *data);
+int		get_rgba(int r, int g, int b, int a);
+int		valid_char(char c);
 
 
 #endif

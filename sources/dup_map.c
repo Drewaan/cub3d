@@ -1,40 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_utils.c                                      :+:      :+:    :+:   */
+/*   dup_map.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/17 16:40:44 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/11/24 19:10:59 by vlorenzo         ###   ########.fr       */
+/*   Created: 2025/11/24 19:36:57 by vlorenzo          #+#    #+#             */
+/*   Updated: 2025/11/24 19:37:10 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-int	check_args(int argc, char **argv)
+char	**dup_map(t_map *map)
 {
-	char	*tmp;
-	int		fd;
+	char	**copy;
+	int		i;
 
-	if (argc != 2)
+	copy = malloc(sizeof(char *) * (map->map_h + 1));
+	if (!copy)
+		error_exit("Malloc failed");
+	i = 0;
+	while (i < map->map_h)
 	{
-		ft_putendl_fd("Error: invalid arguments number", 2);
-		return (0);
+		copy[i] = ft_strdup(map->map_array[i]);
+		if (!copy[i])
+			error_exit("Malloc failed");
+		i++;
 	}
-	tmp = ft_strnstr(argv[1], ".cub", ft_strlen(argv[1]));
-	if (tmp == NULL)
-	{
-		ft_putendl_fd("Error: invalid map", 2);
-		return (0);
-	}
-	fd = open(argv[1], O_RDONLY);
-	if (fd == -1)
-	{
-		ft_putendl_fd("Error: invalid archive format", 2);
-		close(fd);
-		return (0);
-	}
-	close(fd);
-	return (1);
+	copy[i] = NULL;
+	return (copy);
 }
