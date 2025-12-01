@@ -5,24 +5,24 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/24 19:36:57 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/11/24 19:37:10 by vlorenzo         ###   ########.fr       */
+/*   Created: 2025/12/01 20:12:12 by vlorenzo          #+#    #+#             */
+/*   Updated: 2025/12/01 21:50:13 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../includes/parser.h"
 
-char	**dup_map(t_data *d)
+char	**dup_map(t_parser *p)
 {
 	char	**copy;
 	int		i;
 
-	copy = malloc(sizeof(char *) * (d->map_h + 1));
-	if (!copy)
-		exit(1);
+	copy = malloc(sizeof(char *) * (p->map_h + 1));
 	i = -1;
-	while (++i < d->map_h)
-		copy[i] = ft_strdup(d->map[i]);
+	if (!copy)
+		error_exit("dup_map malloc");
+	while (++i < p->map_h)
+		copy[i] = ft_strdup(p->map[i]);
 	copy[i] = NULL;
 	return (copy);
 }

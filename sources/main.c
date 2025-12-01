@@ -5,40 +5,36 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/17 13:23:40 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/11/16 14:22:00 by vlorenzo         ###   ########.fr       */
+/*   Created: 2025/12/01 19:30:09 by vlorenzo          #+#    #+#             */
+/*   Updated: 2025/12/01 20:20:25 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
-
-void	parse_and_check(t_game *game, char *file)
-{
-	t_data	data;
-	char	*line;
-	int 	lines;
-	int		fd;
-
-	data_init(&data);
-	fd = open(file, O_RDONLY);
-	free_data(&data);
-}
+#include "../../includes/cub3d.h"
+#include "../../includes/parser.h"
 
 int	main(int argc, char **argv)
 {
-	t_game	game;
+	t_game		game;
+	t_parser	parser;
 
 	if (!check_args(argc, argv))
-		exit(EXIT_FAILURE);
-	parse_and_check(&game, argv[1]);
-	game.mlx = mlx_init(WIN_W, WIN_H, "cub3d", true);
+		return (1);
+	parser_init(&parser);
+	parse_file(&parser, argv[1]);
+	check_map_parser(&parser);
+	data_to_game(&parser, &game);
+	game.player.speed = 0.20;
+	game.player.rotate_speed = 0.08;
+	game.mlx = mlx_init(WIN_W, WIN_H, "cub3D", false);
+	if (!game.mlx)
+		error_exit("MLX init failed");
 	game.img = mlx_new_image(game.mlx, WIN_W, WIN_H);
 	mlx_image_to_window(game.mlx, game.img, 0, 0);
 	mlx_loop_hook(game.mlx, main_hook, &game);
 	mlx_key_hook(game.mlx, key_hook, &game);
 	mlx_loop(game.mlx);
+	free_parser(&parser);
 	game_over(&game);
-	mlx_delete_image(game.mlx, game.img);
-	mlx_terminate(game.mlx);
 	return (0);
 }
