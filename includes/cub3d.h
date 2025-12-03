@@ -6,7 +6,7 @@
 /*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 13:23:33 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/12/02 18:20:22 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/12/03 16:28:43 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,7 @@ typedef struct s_parser
 
 int		check_args(int argc, char **argv);
 void	check_map_parser(t_parser *p);
+void	load_textures_from_parser(t_game *game, t_parser *p);
 
 // CONTROLS =============================================================
 

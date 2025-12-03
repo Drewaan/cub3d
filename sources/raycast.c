@@ -6,24 +6,22 @@
 /*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 14:13:36 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/12/02 16:43:17 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/12/03 16:13:30 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-void	ray_refresh(t_ray *ray, t_player *player, int x)
+void	ray_refresh(t_ray *ray, t_player *p, int x)
 {
-	ray -> hit = 0;
-	ray -> map_x = (int)player->pos_x;
-	ray -> map_y = (int)player->pos_y;
-	ray -> camera = 2 * x / (double)WIN_W - 1;
-	ray -> map_x = player -> dir_x + player -> plane_x + ray -> camera;
-	ray -> map_y = player -> dir_y + player -> plane_y + ray -> camera;
-	ray -> delta_dist_x = sqrt(1 + (ray -> ray_y * ray -> ray_y) / (ray -> ray_x
-				* ray -> ray_x));
-	ray -> delta_dist_y = sqrt(1 + (ray -> ray_x * ray -> ray_x) / (ray -> ray_y
-				* ray -> ray_y));
+	ray->camera = 2 * x / (double)WIN_W - 1;
+	ray->ray_x = p->dir_x + p->plane_x * ray->camera;
+	ray->ray_y = p->dir_y + p->plane_y * ray->camera;
+	ray->map_x = (int)p->pos_x;
+	ray->map_y = (int)p->pos_y;
+	ray->delta_dist_x = fabs(1 / ray->ray_x);
+	ray->delta_dist_y = fabs(1 / ray->ray_y);
+	ray->hit = 0;
 }
 
 void	ray_dir(t_ray *ray, t_player *player)
@@ -54,28 +52,30 @@ void	ray_dir(t_ray *ray, t_player *player)
 
 void	check_hit(t_game *game)
 {
-	while (game->raycast.hit == 0)
+	t_ray *r = &game->raycast;
+
+	while (r->hit == 0)
 	{
-		if (game->raycast.side_dist_x < game->raycast.side_dist_y)
+		if (r->side_dist_x < r->side_dist_y)
 		{
-			game->raycast.side_dist_x += game->raycast.delta_dist_x;
-			game->raycast.map_x += game->raycast.step_x;
-			game->raycast.side_hit = 0;
+			r->side_dist_x += r->delta_dist_x;
+			r->map_x += r->step_x;
+			r->side_hit = 0;
 		}
 		else
 		{
-			game->raycast.side_dist_y += game->raycast.delta_dist_y;
-			game->raycast.map_y += game->raycast.step_y;
-			game->raycast.side_hit = 1;
+			r->side_dist_y += r->delta_dist_y;
+			r->map_y += r->step_y;
+			r->side_hit = 1;
 		}
-		if (game->raycast.map_x < WIN_W && game->raycast.map_y < WIN_H)
-		{
-			if (game->map.map_array[game->raycast.map_y][game->raycast.map_x] \
-				== '1')
-				game->raycast.hit = 1;
-		}
+		if (r->map_x < 0 || r->map_x >= game->map.map_w ||
+			r->map_y < 0 || r->map_y >= game->map.map_h)
+			error_exit("Ray escaped map (map not closed)");
+		if (game->map.map_array[r->map_y][r->map_x] == '1')
+			r->hit = 1;
 	}
 }
+
 
 void	set_dist(t_game *game)
 {

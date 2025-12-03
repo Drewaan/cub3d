@@ -6,7 +6,7 @@
 /*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 13:23:40 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/12/02 20:00:03 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/12/03 16:28:17 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@ int	main(int argc, char **argv)
 /* 	if (argc == 3 && strcmp(argv[2], "--no-mlx") == 0)
 		disable_mlx = 1; */
 
-/* 	if (!check_args(argc, argv))
+	if (!check_args(argc, argv))
 		return (1);
- */
 	(void)argc;
 	parser_init(&parser);
 	parse_file(&parser, argv[1]);
 	check_map_parser(&parser);
 	data_to_game(&parser, &game);
+	load_textures_from_parser(&game, &parser);
 
 	game.player.speed = 0.20;
 	game.player.rotate_speed = 0.08;

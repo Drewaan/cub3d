@@ -6,7 +6,7 @@
 /*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 18:43:00 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/12/02 15:55:19 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/12/03 16:27:48 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,19 +51,28 @@ void	draw_stripe(t_game *game, int x, int start, int end)
 
 	y = start;
 	get_wall_texture(game);
-	set_tex_params(&game -> wall_tex, &game -> raycast);
+	if (!game->wall_tex.tex)
+	{
+		while (y <= end)
+		{
+			mlx_put_pixel(game->img, x, y, game->textures.floor_color);
+			y++;
+		}
+		return ;
+	}
+	set_tex_params(&game->wall_tex, &game->raycast);
 	while (y <= end)
 	{
-		game -> wall_tex.tex_y = ((int)game -> wall_tex.tex_pos)
-			% game -> wall_tex.tex -> height;
-		game -> wall_tex.tex_pos += game -> wall_tex.tex_pos;
-		color = get_texture_pixel(game -> wall_tex.tex, game -> wall_tex.tex_x,
-				game -> wall_tex.tex_y);
-		dimmed_color = dim_color(&color, game -> raycast.wall_dist);
-		mlx_put_pixel(game -> img, x, y, dimmed_color);
+		game->wall_tex.tex_y = ((int)game->wall_tex.tex_pos) % game->wall_tex.tex->height;
+		game->wall_tex.tex_pos += game->wall_tex.tex_step;
+		color = get_texture_pixel(game->wall_tex.tex, game->wall_tex.tex_x,
+				game->wall_tex.tex_y);
+		dimmed_color = dim_color(&color, game->raycast.wall_dist);
+		mlx_put_pixel(game->img, x, y, dimmed_color);
 		y++;
 	}
 }
+
 
 void	get_wall_height(t_game *game, int x)
 {

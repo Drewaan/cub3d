@@ -6,7 +6,7 @@
 /*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 19:36:47 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/11/24 19:37:28 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/12/03 16:27:16 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,26 @@ t_color	get_texture_pixel(mlx_texture_t *texture, int x, int y)
 	t_color	color;
 	uint8_t	*pixel;
 
-	pixel = texture -> pixels + (y * texture -> width + x)
-		* texture -> bytes_per_pixel;
+	color.red = 0;
+	color.green = 0;
+	color.blue = 0;
+	color.alpha = 0;
+
+	if (!texture)
+		return (color);
+	if (x < 0) x = 0;
+	if (y < 0) y = 0;
+	if (x >= (int)texture->width) x = texture->width - 1;
+	if (y >= (int)texture->height) y = texture->height - 1;
+
+	pixel = texture->pixels + (y * texture->width + x) * texture->bytes_per_pixel;
 	color.red = pixel[0];
 	color.green = pixel[1];
 	color.blue = pixel[2];
 	color.alpha = pixel[3];
 	return (color);
 }
+
 
 void	get_wall_texture(t_game *game)
 {
