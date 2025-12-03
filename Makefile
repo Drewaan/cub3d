@@ -17,7 +17,23 @@ MLX_LIB		:= $(MLX_BUILD)/libmlx42.a
 
 # **************************************************************************** #
 # FILES
-SRCS_FILES =	test.c \
+SRCS_FILES =	check_utils.c \
+				controls.c \
+				data_to_game.c \
+				draw.c \
+				dup_map.c \
+				free_utils.c \
+				hooks.c \
+				initialize.c \
+				load_map_parser.c \
+				main.c \
+				parse_color.c \
+				parse_file.c \
+				raycast.c \
+				read_file_to_array.c \
+				texture.c \
+				utils.c \
+
 
 SRCS	:= $(addprefix $(SRC_DIR), $(SRCS_FILES))
 OBJS	:= $(addprefix $(OBJ_DIR), $(SRCS_FILES:.c=.o))

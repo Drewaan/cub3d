@@ -6,7 +6,7 @@
 /*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 14:13:36 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/11/24 18:32:00 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/12/02 16:43:17 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,25 +54,25 @@ void	ray_dir(t_ray *ray, t_player *player)
 
 void	check_hit(t_game *game)
 {
-	while (game -> raycast.hit == 0)
+	while (game->raycast.hit == 0)
 	{
-		if (game -> raycast.side_dist_x < game -> raycast.side_dist_y)
+		if (game->raycast.side_dist_x < game->raycast.side_dist_y)
 		{
-			game -> raycast.side_dist_x += game -> raycast.delta_dist_x;
-			game -> raycast.map_x += game -> raycast.step_x;
-			game -> raycast.side_hit = 0;
+			game->raycast.side_dist_x += game->raycast.delta_dist_x;
+			game->raycast.map_x += game->raycast.step_x;
+			game->raycast.side_hit = 0;
 		}
 		else
 		{
-			game -> raycast.side_dist_y += game -> raycast.delta_dist_y;
-			game -> raycast.map_y += game -> raycast.step_y;
-			game -> raycast.side_hit = 1;
+			game->raycast.side_dist_y += game->raycast.delta_dist_y;
+			game->raycast.map_y += game->raycast.step_y;
+			game->raycast.side_hit = 1;
 		}
-		if (game -> raycast.map_x < WIN_W && game -> raycast.map_y < WIN_H)
+		if (game->raycast.map_x < WIN_W && game->raycast.map_y < WIN_H)
 		{
 			if (game->map.map_array[game->raycast.map_y][game->raycast.map_x] \
 				== '1')
-				game -> raycast.hit = 1;
+				game->raycast.hit = 1;
 		}
 	}
 }

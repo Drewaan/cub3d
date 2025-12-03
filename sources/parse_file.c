@@ -3,14 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 19:09:01 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/11/24 19:30:44 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/12/02 15:41:33 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// parser.c
 #include "../includes/cub3d.h"
 
 static int	is_ident(char *l)
@@ -20,53 +19,35 @@ static int	is_ident(char *l)
 		|| !ft_strncmp(l, "F ", 2) || !ft_strncmp(l, "C ", 2));
 }
 
-static void	parse_ident_line(t_data *d, char *l)
+static void	parse_ident_line(t_parser *p, char *l)
 {
 	if (!ft_strncmp(l, "NO ", 3))
-		d->north = ft_strdup(l + 3);
+		p->paths.no = ft_strdup(l + 3);
 	else if (!ft_strncmp(l, "SO ", 3))
-		d->south = ft_strdup(l + 3);
+		p->paths.so = ft_strdup(l + 3);
 	else if (!ft_strncmp(l, "WE ", 3))
-		d->west = ft_strdup(l + 3);
+		p->paths.we = ft_strdup(l + 3);
 	else if (!ft_strncmp(l, "EA ", 3))
-		d->east = ft_strdup(l + 3);
+		p->paths.ea = ft_strdup(l + 3);
 	else if (!ft_strncmp(l, "F ", 2))
-		parse_color(&d->floor, l + 2);
+		parse_color(&p->floor_color, l + 2);
 	else if (!ft_strncmp(l, "C ", 2))
-		parse_color(&d->ceiling, l + 2);
+		parse_color(&p->ceil_color, l + 2);
 }
 
-static int	find_map_start(char **ls)
+void	parse_file(t_parser *p, char *path)
 {
-	int	i;
-
-	i = 0;
-	while (ls[i])
-	{
-		if (!is_ident(ls[i]) && ft_strlen(ls[i]) > 0)
-			return (i);
-		i++;
-	}
-	error_exit("No map found");
-	return (-1);
-}
-
-void	parse_file(t_data *d, char *path)
-{
-	char	**ls;
+	char	**lines;
 	int		i;
-	int		m;
 
-	check_file_extension(path);
-	ls = read_file_to_array(path);
+	lines = read_file_to_array(path);
 	i = 0;
-	while (ls[i] && is_ident(ls[i]))
+	while (lines[i] && is_ident(lines[i]))
 	{
-		parse_ident_line(d, ls[i]);
+		parse_ident_line(p, lines[i]);
 		i++;
 	}
-	m = find_map_start(ls);
-	load_map(d, ls + m);
-	check_identifiers(d);
-	free_split(ls);
+	load_map_parser(p, lines + i);
+	check_map_parser(p);
+	free_split(lines);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_file_to_array.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 19:34:42 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/11/24 19:34:50 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/12/02 16:21:32 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ char	**read_file_to_array(char *path)
 	char	**out;
 	char	*tmp;
 
+	accum = ft_strdup("");
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
 		error_exit("Cannot open .cub file");
-	accum = NULL;
 	line = get_next_line(fd);
 	while (line)
 	{

@@ -3,25 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   map_loader.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 19:11:27 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/11/24 19:11:34 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/12/02 15:39:25 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-static int	get_max_width(char **m)
+static int	max_width(char **m)
 {
-	int	i;
-	int	max;
+	int	i = 0, max;
+	int	len;
 
-	i = -1;
-	max = 0;
-	while (m[++i])
-		if ((int)ft_strlen(m[i]) > max)
-			max = ft_strlen(m[i]);
+	i = 0, max = 0;
+	while (m[i])
+	{
+		len = ft_strlen(m[i]);
+		if (len > max)
+			max = len;
+		i++;
+	}
 	return (max);
 }
 
@@ -33,35 +36,26 @@ static char	*pad(char *row, int w)
 	len = ft_strlen(row);
 	r = malloc(w + 1);
 	if (!r)
-		exit(1);
+		error_exit("pad malloc");
 	ft_memcpy(r, row, len);
 	ft_memset(r + len, ' ', w - len);
-	r[w] = 0;
+	r[w] = '\0';
 	return (r);
 }
 
-void	load_map(t_map *map, char **ls)
+void	load_map_parser(t_parser *p, char **m)
 {
-	int	i;
 	int	h;
-	int	w;
 
 	h = 0;
-	while (ls[h])
+	while (m[h])
 		h++;
-	map->map_h = h;
-	w = get_max_width(ls);
-	map->map_w = w;
-	map->map_array = malloc(sizeof(char *) * (h + 1));
-	if (!map->map_array)
-		error_exit("Malloc failed");
-	i = 0;
-	while (i < h)
-	{
-		map->map_array[i] = pad(ls[i], w);
-		if (!map->map_array[i])
-			error_exit("Malloc failed");
-		i++;
-	}
-	map->map_array[i] = NULL;
+	p->map_h = h;
+	p->map_w = max_width(m);
+	p->map = malloc(sizeof(char *) * (h + 1));
+	if (!p->map)
+		error_exit("map malloc");
+	for (int i = 0; i < h; i++)
+		p->map[i] = pad(m[i], p->map_w);
+	p->map[h] = NULL;
 }

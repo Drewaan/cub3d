@@ -6,7 +6,7 @@
 /*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 18:43:00 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/11/24 19:47:47 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/12/02 15:55:19 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	draw_stripe(t_game *game, int x, int start, int end)
 
 	y = start;
 	get_wall_texture(game);
-	set_text_params(&game -> wall_tex, &game -> raycast);
+	set_tex_params(&game -> wall_tex, &game -> raycast);
 	while (y <= end)
 	{
 		game -> wall_tex.tex_y = ((int)game -> wall_tex.tex_pos)
