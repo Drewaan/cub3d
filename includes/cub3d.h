@@ -3,223 +3,153 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 13:23:33 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/12/03 16:28:43 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/12/08 18:45:58 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
-#include "../libft/include/libft.h"
-#include "../MLX42/include/MLX42/MLX42.h"
+/* ---------------- LIBRARIES ---------------- */
+# include "../libft/include/libft.h"
+# include "MLX42/MLX42.h"
+# include <math.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <fcntl.h>
 
-# define WIN_W 1366
-# define WIN_H 768
-# define TILE 10
+/* ---------------- CONSTANTS ---------------- */
+# define WIN_W 1280
+# define WIN_H 720
 
+/* ---------------- COLORS ---------------- */
 typedef struct s_color
 {
-	int				red;
-	int				green;
-	int				blue;
-	int				alpha;
+	int red;
+	int green;
+	int blue;
+	int alpha;
 }	t_color;
 
-typedef struct s_data
-{
-	char			*north;
-	char			*south;
-	char			*west;
-	char			*east;
-	t_color			floor;
-	t_color			ceiling;
-	int				map_start;
-	int				map_lines;
-}	t_data;
+uint32_t	get_rgba(int r, int g, int b, int a);
 
-typedef struct s_player
+/* ---------------- TEXTURES ---------------- */
+typedef struct s_tex
 {
-	double			pos_x;
-	double			pos_y;
-	double			dir_x;
-	double			dir_y;
-	double			plane_x;
-	double			plane_y;
-	double			speed;
-	double			rotate_speed;
-}	t_player;
-
-typedef struct s_map
-{
-	char			**map_array;
-	int				map_w;
-	int				map_h;
-}	t_map;
+	mlx_texture_t	*north;
+	mlx_texture_t	*south;
+	mlx_texture_t	*east;
+	mlx_texture_t	*west;
+	uint32_t		floor_color;
+	uint32_t		ceil_color;
+}	t_tex;
 
 typedef struct s_wall_tex
 {
 	mlx_texture_t	*tex;
 	int				tex_x;
 	int				tex_y;
-	double			tex_pos;
 	double			tex_step;
+	double			tex_pos;
 }	t_wall_tex;
 
-typedef struct s_texture
+/* ---------------- RAYCAST ---------------- */
+typedef struct s_raycast
 {
-	mlx_texture_t	*north;
-	mlx_texture_t	*south;
-	mlx_texture_t	*west;
-	mlx_texture_t	*east;
-	int				floor_color;
-	int				ceiling_color;
-}	t_texture;
+    double  raydir_x;
+    double  raydir_y;
+    int     map_x;
+    int     map_y;
+    double  side_dist_x;
+    double  side_dist_y;
+    double  delta_dist_x;
+    double  delta_dist_y;
+    double  perp_wall_dist;
+    int     step_x;
+    int     step_y;
+    int     hit;
+    int     side;
+    double  wall_x;
+    double  wall_dist;
+}   t_raycast;
 
-typedef struct s_ray
+/* ---------------- PLAYER ---------------- */
+typedef struct s_player
 {
-	double			camera;
-	double			ray_x;
-	double			ray_y;
-	double			side_dist_x;
-	double			side_dist_y;
-	double			delta_dist_x;
-	double			delta_dist_y;
-	double			wall_dist;
-	double			wall_x;
-	int				map_x;
-	int				map_y;
-	int				step_x;
-	int				step_y;
-	int				hit;
-	int				side_hit;
-}	t_ray;
-
-typedef struct s_game
-{
-	mlx_t			*mlx;
-	mlx_image_t		*img;
-	t_map			map;
-	t_player		player;
-	t_texture		textures;
-	t_wall_tex		wall_tex;
-	t_ray			raycast;
-}					t_game;
-
-// ----- PATHS -----
-typedef struct s_paths
-{
-	char	*no;
-	char	*so;
-	char	*we;
-	char	*ea;
-}			t_paths;
-
-// ---- PARSER STRUCT ----
-typedef struct s_parser
-{
-	t_paths	paths;
-	t_color	floor_color;
-	t_color	ceil_color;
-
-	char	**map;
-	int		map_w;
-	int		map_h;
-
-	int		player_x;
-	int		player_y;
-	char	player_dir;
-
+	double	pos_x;
+	double	pos_y;
 	double	dir_x;
 	double	dir_y;
 	double	plane_x;
 	double	plane_y;
+	double	speed;
+	double	rot_speed;
+}	t_player;
 
-}			t_parser;
+/* ---------------- MAP ---------------- */
+typedef struct s_map
+{
+	char	**map_array;
+	int		width;
+	int		height;
+}	t_map;
+
+/* ---------------- GAME ---------------- */
+typedef struct s_game
+{
+	mlx_t		*mlx;
+	mlx_image_t	*img;
+	t_map		map;
+	t_player	player;
+	t_tex		tex;
+	t_raycast	raycast;
+	t_wall_tex	wall_tex;
+}	t_game;
+
+/* ---------------- INIT ---------------- */
+void	init_game(t_game *game);
+void	init_player(t_game *game);
+void	init_map(t_map *map);
+
+/* ---------------- PARSING ---------------- */
+int		check_cub_extension(const char *file);
+int		parse_cub(t_game *game, const char *file);
+int		parse_config(t_game *g, char **lines, int *i);
+int		parse_textures(t_game *game, char *line);
+int		parse_colors(t_game *game, char *line);
+int		parse_map(t_game *game, char **lines, int *i);
+int		validate_map(t_map *map);
+void	normalize_map(t_map *map);
+
+/* ---------------- TEXTURE UTILS ---------------- */
+t_color 		get_texture_pixel(mlx_texture_t *tex, int x, int y);
+void			set_tex_params(t_wall_tex *wt, t_raycast *r);
+void			get_wall_texture(t_game *game);
+void    		get_wall_height(t_game *game, int x);
 
 
-// CHECK_UTILS =========================================================
+/* ---------------- FREE ---------------- */
+void	free_map(t_map *map);
+void	ft_free_split(char **arr);
 
-int		check_args(int argc, char **argv);
-void	check_map_parser(t_parser *p);
-void	load_textures_from_parser(t_game *game, t_parser *p);
-
-// CONTROLS =============================================================
-
+/* ---------------- CONTROLS ---------------- */
 void	move_forward(t_game *game);
 void	move_backward(t_game *game);
-void	move_right(t_game *game);
 void	move_left(t_game *game);
-void	rotate(t_player *player, float angle);
+void	move_right(t_game *game);
 
-// DATA_TO_GAME =========================================================
-
-void	data_to_game(t_parser *p, t_game *g);
-
-// DRAW =========================================================
-
-void	draw_sky_and_floor(t_game *game, int x);
-int		dim_color(t_color *color, double dist);
-void	draw_stripe(t_game *game, int x, int start, int end);
-void	get_wall_height(t_game *game, int x);
-
-// DUP_MAP =========================================================
-
-char	**dup_map(t_parser *p);
-
-// FREE_UTILS =========================================================
-
-void	free_parser(t_parser *p);
-void	error_exit(char *msg);
-void	free_split(char **arr);
-void	game_over(t_game *g);
-
-// HOOKS ===========================================================
-
+/* ---------------- HOOKS ---------------- */
 void	key_hook(mlx_key_data_t keydata, void *params);
+void	rotate(t_player *p, double angle);
 void	main_hook(void *params);
 
-// INITIALIZE =======================================================
-
-void	set_plane(t_player *player, char dir);
-void	set_dir(t_player *player, char dir);
-void	parser_init(t_parser *p);
-
-// LOAD_MAP_PARSER =======================================================
-
-void	load_map_parser(t_parser *p, char **m);
-
-// PARSE_COLOR =======================================================
-
-void	parse_color(t_color *c, char *s);
-
-// PARSE_FILE =========================================================
-
-void	parse_file(t_parser *p, char *path);
-
-// RAYCAST =========================================================
-
-void	ray_refresh(t_ray *ray, t_player *player, int x);
-void	ray_dir(t_ray *ray, t_player *player);
-void	check_hit(t_game *game);
-void	set_dist(t_game *game);
-void	raycast(t_game *game);
-
-// READ_FILE_TO_ARRAY =========================================================
-
-char	**read_file_to_array(char *path);
-
-// TEXTURE =========================================================
-
-t_color	get_texture_pixel(mlx_texture_t *texture, int x, int y);
-void	get_wall_texture(t_game *game);
-void	set_tex_params(t_wall_tex *wall_tex, t_ray *ray);
-
-// UTILS =========================================================
-
-int		get_rgba(int r, int g, int b, int a);
-int		valid_char(char c);
+/* ---------------- DRAW ---------------- */
+void	draw_sky_and_floor(t_game *game, int x);
+void	draw_stripe(t_game *game, int x, int start, int end);
+int 	dim_color(t_color *color, double dist);
+void 	raycast(t_game *game);
 
 #endif

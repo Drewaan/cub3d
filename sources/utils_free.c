@@ -1,32 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   utils_free.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/08 15:52:12 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/12/02 16:10:01 by aamaya-g         ###   ########.fr       */
+/*   Created: 2025/12/08 17:49:01 by vlorenzo          #+#    #+#             */
+/*   Updated: 2025/12/08 17:50:09 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/libft.h"
+#include "../../includes/cub3d.h"
 
-size_t	ft_strlen(const char *s)
+void	ft_free_split(char **arr)
 {
 	int	i;
 
-	if (!*s)
-		return (0);
+	if (!arr)
+		return;
 	i = 0;
-	while (s[i])
+	while (arr[i])
+	{
+		free(arr[i]);
 		i++;
-	return (i);
+	}
+	free(arr);
 }
-
-/* int main()
-{
-	char x[] = "hola";
-	printf("%zu\n", ft_strlen(x));
-}
- */

@@ -1,86 +1,58 @@
 # **************************************************************************** #
-# DIRECTORIES
-SRC_DIR			:= sources/
-INC_DIR			:= includes/
-OBJ_DIR			:= obj/
-LIBFT_DIR		:= ./libft
-MLX_DIR			:= ./MLX42
-MLX_BUILD		:= $(MLX_DIR)/build
+#                                   CONFIG                                     #
+# **************************************************************************** #
 
-LIBFT_INC_DIR	:= $(LIBFT_DIR)/include/
+NAME        = cub3D
+CC          = cc
+CFLAGS      = -Wall -Wextra -Werror -Iincludes -Ilibft/include -IMLX42/include -O3
+
+SRC_DIR     = sources/
+OBJ_DIR     = obj/
+
+LIBFT_DIR   = libft
+LIBFT       = $(LIBFT_DIR)/libft.a
+
+MLX_DIR     = MLX42
+MLX_LIB     = $(MLX_DIR)/build/libmlx42.a
+
+MLX_FLAGS   = -ldl -lglfw -pthread -lm
+
+SRC         = $(wildcard $(SRC_DIR)*.c)
+OBJS        = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 # **************************************************************************** #
-# PROJECT
-NAME		:= cub3D
-LIBFT		:= $(LIBFT_DIR)/libft.a
-MLX_LIB		:= $(MLX_BUILD)/libmlx42.a
+#                                   COLORS                                     #
+# **************************************************************************** #
+
+NC      = \033[0m
+CL      = \033[36m
+BW      = \033[1;37m
+BG      = \033[1;32m
+BY      = \033[1;33m
 
 # **************************************************************************** #
-# FILES
-SRCS_FILES =	check_utils.c \
-				controls.c \
-				data_to_game.c \
-				draw.c \
-				dup_map.c \
-				free_utils.c \
-				hooks.c \
-				initialize.c \
-				load_map_parser.c \
-				main.c \
-				parse_color.c \
-				parse_file.c \
-				raycast.c \
-				read_file_to_array.c \
-				texture.c \
-				utils.c \
+#                                   RULES                                      #
+# **************************************************************************** #
 
+all: $(LIBFT) $(MLX_LIB) $(NAME)
 
-SRCS	:= $(addprefix $(SRC_DIR), $(SRCS_FILES))
-OBJS	:= $(addprefix $(OBJ_DIR), $(SRCS_FILES:.c=.o))
-DEPS	:= $(OBJS:.o=.d)
+# ---------------- LIBFT ---------------- #
+
+$(LIBFT):
+	@$(MAKE) -C $(LIBFT_DIR)
+
+# ---------------- MLX42 ---------------- #
+
+$(MLX_LIB):
+	@cmake -S $(MLX_DIR) -B $(MLX_DIR)/build
+	@cmake --build $(MLX_DIR)/build -j4
 
 # **************************************************************************** #
-# COMPILER
-CC		:= cc
-CFLAGS	:= -Wall -Wextra -Werror -MMD -MP -g
-IFLAGS	:= -I$(INC_DIR) -I$(LIBFT_INC_DIR) -I$(MLX_DIR)/include
-LDFLAGS	:= $(LIBFT) $(MLX_LIB) -ldl -lglfw -pthread -lm
-
+#                               COMPILAR PROYECTO                              #
 # **************************************************************************** #
-# COLORES BONITOS
-BR	= \033[1;31m
-BG	= \033[1;32m
-BB	= \033[1;34m
-BY	= \033[1;33m
-BW	= \033[1;37m
-NC	= \033[0;39m
-CL	= \033[2K
 
-# **************************************************************************** #
-# BUILD OPTIONS
--include $(DEPS)
-
-# Default rule
-all: libmlx libft $(NAME)
-
-# **************************************************************************** #
-# COMPILAR BIBLIOTECAS
-libft:
-	@echo "$(BB)[LIBFT]$(NC) Compilando..."
-	@$(MAKE) -C $(LIBFT_DIR) > /dev/null
-
-libmlx:
-	@if [ ! -d "$(MLX_BUILD)" ]; then \
-		echo "$(BB)[MLX42]$(NC) Creando build..."; \
-		cmake -S $(MLX_DIR) -B $(MLX_BUILD) > /dev/null; \
-	fi
-	@cmake --build $(MLX_BUILD) -j4 > /dev/null
-	@echo "$(BG)[MLX42] Compilada con éxito ✅$(NC)"
-
-# **************************************************************************** #
-# COMPILAR PROYECTO
-$(NAME): $(OBJS) $(LIBFT)
-	@$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME)
+$(NAME): $(OBJS) $(LIBFT) $(MLX_LIB)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MLX_LIB) $(MLX_FLAGS) -o $(NAME)
 	@printf "%b" "$(CL) -> $(BW)[$(NAME)]:\t$(BG)Compilación exitosa ✅$(NC)\n"
 	@echo "─────────────────────────────────────────────────────$(BY)"
 	@echo " ░▒▓██████▓▒░ ▒▓█▓▒  ▒▓█▓▒ ▒▓███████▓▒ ▒▓███████▓▒░ ▒▓███████▓▒░  "
@@ -94,29 +66,30 @@ $(NAME): $(OBJS) $(LIBFT)
 	@echo "$(NC)─────────────────────────────────────────────────────"
 
 # **************************************************************************** #
-# COMPILAR OBJETOS
-$(OBJ_DIR):
-	@mkdir -p $(OBJ_DIR)
+#                               COMPILAR OBJETOS                               #
+# **************************************************************************** #
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
-	@mkdir -p $(dir $@)
+$(OBJ_DIR)/%.o: $(SRC_DIR)%.c
+	@mkdir -p $(OBJ_DIR)
 	@printf "%b" "$(CL) -> $(BW)[$(NAME)]:\t$(NC)$<\r"
-	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 # **************************************************************************** #
-# LIMPIEZA
+#                                   LIMPIEZA                                   #
+# **************************************************************************** #
+
 clean:
-	@$(MAKE) -sC $(LIBFT_DIR) clean
 	@rm -rf $(OBJ_DIR)
+	@$(MAKE) -C $(LIBFT_DIR) clean
 	@printf "%b" "$(CL) -> $(BW)[$(NAME)]:\t$(BG)Objetos limpiados ❎$(NC)\n"
 
-fclean:
-	@$(MAKE) -sC $(LIBFT_DIR) fclean
-	@rm -rf $(NAME) $(OBJ_DIR) $(MLX_BUILD)
+fclean: clean
+	@rm -rf $(NAME)
+	@rm -rf $(MLX_DIR)/build
+	@$(MAKE) -C $(LIBFT_DIR) fclean
 	@printf "%b" "$(CL) -> $(BW)[$(NAME)]:\t$(BG)Proyecto limpiado 🧹$(NC)\n"
 
 re: fclean all
 
-# **************************************************************************** #
-.PHONY: all clean fclean re libmlx libft
+.PHONY: all clean fclean re
 .DEFAULT_GOAL := all

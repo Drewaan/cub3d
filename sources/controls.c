@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   controls.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 17:51:54 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/10/23 19:49:48 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/12/08 18:06:49 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,18 +78,4 @@ void	move_left(t_game *game)
 	if (game -> map.map_array[(int)(newposy - game -> player.dir_x
 			* collision_margin)][(int)game -> player.pos_x] != '1')
 		game -> player.pos_y = newposy;
-}
-
-void	rotate(t_player *player, float angle)
-{
-	double	old_dir_x;
-	double	old_plane_x;
-
-	old_dir_x = player -> dir_x;
-	old_plane_x = player -> plane_x;
-	player -> dir_x = player->dir_x * cos(angle) - player->dir_y * sin(angle);
-	player -> dir_y = old_dir_x * sin(angle) + player -> dir_y * cos(angle);
-	player -> plane_x = player -> plane_x * cos(angle) - player -> plane_y
-		* sin(angle);
-	player -> plane_y = old_plane_x * sin(angle) + player->plane_y * cos(angle);
 }

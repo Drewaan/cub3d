@@ -1,32 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   check_cub_extension.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/08 15:52:12 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/12/02 16:10:01 by aamaya-g         ###   ########.fr       */
+/*   Created: 2025/12/08 16:08:39 by vlorenzo          #+#    #+#             */
+/*   Updated: 2025/12/08 16:08:41 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/libft.h"
+#include "../includes/cub3d.h"
 
-size_t	ft_strlen(const char *s)
+int	check_cub_extension(const char *file)
 {
-	int	i;
+	int	len;
 
-	if (!*s)
+	len = ft_strlen(file);
+	if (len < 4)
 		return (0);
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
+	return (!ft_strncmp(file + len - 4, ".cub", 4));
 }
-
-/* int main()
-{
-	char x[] = "hola";
-	printf("%zu\n", ft_strlen(x));
-}
- */

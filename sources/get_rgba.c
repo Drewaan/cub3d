@@ -1,32 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   get_rgba.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/08 15:52:12 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/12/02 16:10:01 by aamaya-g         ###   ########.fr       */
+/*   Created: 2025/12/08 18:14:27 by vlorenzo          #+#    #+#             */
+/*   Updated: 2025/12/08 18:14:34 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/libft.h"
+#include "../includes/cub3d.h"
 
-size_t	ft_strlen(const char *s)
+uint32_t    get_rgba(int r, int g, int b, int a)
 {
-	int	i;
+    uint32_t color;
 
-	if (!*s)
-		return (0);
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
+    color = ((uint32_t)r << 24)
+          | ((uint32_t)g << 16)
+          | ((uint32_t)b << 8)
+          | ((uint32_t)a);
+    return (color);
 }
-
-/* int main()
-{
-	char x[] = "hola";
-	printf("%zu\n", ft_strlen(x));
-}
- */

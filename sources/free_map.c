@@ -1,32 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   free_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/08 15:52:12 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/12/02 16:10:01 by aamaya-g         ###   ########.fr       */
+/*   Created: 2025/12/08 13:39:34 by vlorenzo          #+#    #+#             */
+/*   Updated: 2025/12/08 17:48:23 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/libft.h"
+#include "../includes/cub3d.h"
 
-size_t	ft_strlen(const char *s)
+void	free_map(t_map *map)
 {
 	int	i;
 
-	if (!*s)
-		return (0);
+	if (!map || !map->map_array)
+		return;
 	i = 0;
-	while (s[i])
+	while (map->map_array[i])
+	{
+		free(map->map_array[i]);
 		i++;
-	return (i);
+	}
+	free(map->map_array);
+	map->map_array = NULL;
 }
-
-/* int main()
-{
-	char x[] = "hola";
-	printf("%zu\n", ft_strlen(x));
-}
- */

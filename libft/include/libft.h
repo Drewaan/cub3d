@@ -18,7 +18,6 @@
 #  define OPEN_MAX 256
 # endif
 
-# include "../../includes/cub3d.h"
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdarg.h>

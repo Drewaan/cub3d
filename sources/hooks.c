@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 18:22:02 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/11/24 19:49:09 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/12/08 18:07:01 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,19 @@ void	key_hook(mlx_key_data_t keydata, void *params)
 	game = params;
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
 		mlx_close_window(game -> mlx);
+}
+
+void    rotate(t_player *p, double angle)
+{
+    double old_dir_x;
+    double old_plane_x;
+
+    old_dir_x = p->dir_x;
+    p->dir_x = p->dir_x * cos(angle) - p->dir_y * sin(angle);
+    p->dir_y = old_dir_x * sin(angle) + p->dir_y * cos(angle);
+    old_plane_x = p->plane_x;
+    p->plane_x = p->plane_x * cos(angle) - p->plane_y * sin(angle);
+    p->plane_y = old_plane_x * sin(angle) + p->plane_y * cos(angle);
 }
 
 void	main_hook(void *params)
@@ -36,7 +49,7 @@ void	main_hook(void *params)
 	if (mlx_is_key_down(game -> mlx, MLX_KEY_S))
 		move_backward(game);
 	if (mlx_is_key_down(game -> mlx, MLX_KEY_LEFT))
-		rotate(&game -> player, -game -> player.rotate_speed);
+		rotate(&game -> player, -game -> player.rot_speed);
 	if (mlx_is_key_down(game -> mlx, MLX_KEY_RIGHT))
-		rotate(&game -> player, game -> player.rotate_speed);
+		rotate(&game -> player, game -> player.rot_speed);
 }

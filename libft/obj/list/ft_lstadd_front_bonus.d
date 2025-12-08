@@ -1,9 +1,0 @@
-obj/list/ft_lstadd_front_bonus.o: sources/list/ft_lstadd_front_bonus.c \
- sources/list/../../include/libft.h \
- sources/list/../../include/../../includes/cub3d.h \
- sources/list/../../include/../../includes/../libft/include/libft.h \
- sources/list/../../include/../../includes/../MLX42/include/MLX42/MLX42.h
-sources/list/../../include/libft.h:
-sources/list/../../include/../../includes/cub3d.h:
-sources/list/../../include/../../includes/../libft/include/libft.h:
-sources/list/../../include/../../includes/../MLX42/include/MLX42/MLX42.h:
