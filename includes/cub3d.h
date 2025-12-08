@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 13:23:33 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/12/08 22:17:10 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/12/08 22:33:48 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,8 @@ int				parse_colors(t_game *game, char *line);
 int				parse_map(t_game *game, char **lines, int *i);
 int				validate_map(t_map *map);
 void			normalize_map(t_map *map);
+int set_player_pos(t_game *g, char c, int y, int x);
+
 
 /* ---------------- TEXTURE UTILS ---------------- */
 mlx_texture_t	*load_texture(char *path);
