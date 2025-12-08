@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 16:04:54 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/12/08 17:24:02 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/12/08 22:17:47 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,6 @@ void	init_player(t_game *game)
 
 	game->player.speed = 0.06;
 	game->player.rot_speed = 0.04;
+
+	game->player.has_spawn = 0;
 }

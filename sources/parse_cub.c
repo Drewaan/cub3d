@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 13:52:41 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/12/08 17:30:16 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/12/08 21:39:26 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ static int  count_lines(int fd)
     return (n);
 }
 
-static char	**read_file_lines(const char *file)
+static char **read_file_lines(const char *file)
 {
-	 int     fd;
+    int     fd;
     int     total;
     char    **arr;
     char    *line;
@@ -101,29 +101,24 @@ static int parse_config_block(t_game *g, char **lines, int *i)
 int parse_cub(t_game *game, const char *file)
 {
     char    **lines;
-    int     i;
+    int     i = 0;
 
     lines = read_file_lines(file);
     if (!lines)
         return (1);
-    i = 0;
+
     if (parse_config_block(game, lines, &i))
-    {
-        ft_free_split(lines);
-        return (1);
-    }
+        return (ft_free_split(lines), 1);
+
     while (lines[i] && lines[i][0] == '\0')
         i++;
+
     if (parse_map(game, lines, &i))
-    {
-        ft_free_split(lines);
-        return (1);
-    }
+        return (ft_free_split(lines), 1);
+
     if (validate_map(&game->map))
-    {
-        ft_free_split(lines);
-        return (1);
-    }
+        return (ft_free_split(lines), 1);
+
     ft_free_split(lines);
     return (0);
 }

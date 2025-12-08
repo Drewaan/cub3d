@@ -6,7 +6,7 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 13:55:54 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/12/08 17:37:53 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/12/08 22:15:38 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,18 @@ static int	find_map_start(char **lines, int i)
 	return (-1);
 }
 
+/* ---------------- CALCULATE MAP SIZE ---------------- */
+
 static void	calc_map_size(t_map *map, char **lines, int start)
 {
-	int	i;
-	int	len;
+	int		i;
+	int		len;
 
-	i = start;
 	map->height = 0;
 	map->width = 0;
-	while (lines[i] && lines[i][0] != '\0')
+	i = start;
+
+	while (lines[i] && ft_strlen(lines[i]) > 0)
 	{
 		len = ft_strlen(lines[i]);
 		if (len > map->width)
@@ -41,10 +44,13 @@ static void	calc_map_size(t_map *map, char **lines, int start)
 	}
 }
 
+/* ---------------- COPY MAP RECTANGULAR ---------------- */
+
 static int	copy_map(t_map *map, char **lines, int start)
 {
-	int	i;
 	int	row;
+	int	i;
+	int	len;
 
 	map->map_array = malloc(sizeof(char *) * (map->height + 1));
 	if (!map->map_array)
@@ -54,9 +60,15 @@ static int	copy_map(t_map *map, char **lines, int start)
 	i = start;
 	while (row < map->height)
 	{
-		map->map_array[row] = ft_strdup(lines[i]);
+		map->map_array[row] = malloc(map->width + 1);
 		if (!map->map_array[row])
 			return (1);
+
+		len = ft_strlen(lines[i]);
+		ft_memset(map->map_array[row], ' ', map->width);
+		ft_memcpy(map->map_array[row], lines[i], len);
+		map->map_array[row][map->width] = '\0';
+
 		row++;
 		i++;
 	}
@@ -64,62 +76,56 @@ static int	copy_map(t_map *map, char **lines, int start)
 	return (0);
 }
 
-static int	set_player_pos(t_game *game, char c, int y, int x)
+/* ---------------- PLAYER POSITION ---------------- */
+
+static int	set_player_pos(t_game *g, char c, int y, int x)
 {
-	if (game->player.pos_x != 0 || game->player.pos_y != 0)
+	if (g->player.has_spawn)
 		return (1);
 
-	game->player.pos_x = x + 0.5;
-	game->player.pos_y = y + 0.5;
+	g->player.pos_x = x + 0.5;
+	g->player.pos_y = y + 0.5;
+	g->player.has_spawn = 1;
 
 	if (c == 'N')
-	{
-		game->player.dir_x = 0;
-		game->player.dir_y = -1;
-	}
+		(g->player.dir_x = 0, g->player.dir_y = -1);
 	else if (c == 'S')
-	{
-		game->player.dir_x = 0;
-		game->player.dir_y = 1;
-	}
+		(g->player.dir_x = 0, g->player.dir_y = 1);
 	else if (c == 'E')
-	{
-		game->player.dir_x = 1;
-		game->player.dir_y = 0;
-	}
+		(g->player.dir_x = 1, g->player.dir_y = 0);
 	else if (c == 'W')
-	{
-		game->player.dir_x = -1;
-		game->player.dir_y = 0;
-	}
+		(g->player.dir_x = -1, g->player.dir_y = 0);
+
 	return (0);
 }
 
-static int	parse_player(t_game *game)
+static int	parse_player(t_game *g)
 {
-	int	y;
-	int	x;
+	int		y;
+	int		x;
 	char	c;
 
 	y = 0;
-	while (game->map.map_array[y])
+	while (g->map.map_array[y])
 	{
 		x = 0;
-		while (game->map.map_array[y][x])
+		while (g->map.map_array[y][x])
 		{
-			c = game->map.map_array[y][x];
+			c = g->map.map_array[y][x];
 			if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
 			{
-				if (set_player_pos(game, c, y, x))
+				if (set_player_pos(g, c, y, x))
 					return (1);
-				game->map.map_array[y][x] = '0';
+				g->map.map_array[y][x] = '0';
 			}
 			x++;
 		}
 		y++;
 	}
-	return (game->player.pos_x == 0 ? 1 : 0);
+	return (g->player.has_spawn == 0);
 }
+
+/* ---------------- MAIN ENTRY ---------------- */
 
 int	parse_map(t_game *game, char **lines, int *i)
 {
@@ -138,5 +144,6 @@ int	parse_map(t_game *game, char **lines, int *i)
 		return (1);
 
 	normalize_map(&game->map);
+
 	return (0);
 }

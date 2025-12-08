@@ -6,11 +6,11 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 18:43:00 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/12/08 18:53:08 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/12/08 20:02:45 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
 void	draw_sky_and_floor(t_game *game, int x)
 {
@@ -29,7 +29,6 @@ void	draw_sky_and_floor(t_game *game, int x)
 	}
 }
 
-
 int	dim_color(t_color *color, double dist)
 {
 	int	new_color;
@@ -40,7 +39,8 @@ int	dim_color(t_color *color, double dist)
 	color->red /= dist;
 	color->green /= dist;
 	color->blue /= dist;
-	new_color = get_rgba(color->red, color->green, color->blue, color->alpha);
+	new_color = get_rgba(color->red, color->green,
+			color->blue, color->alpha);
 	return (new_color);
 }
 
@@ -50,17 +50,9 @@ void	draw_stripe(t_game *game, int x, int start, int end)
 	int		dimmed;
 	t_color	color;
 
-	y = start;
-	get_wall_texture(game);
 	if (!game->wall_tex.tex)
-	{
-		while (y <= end)
-		{
-			mlx_put_pixel(game->img, x, y, game->tex.floor_color);
-			y++;
-		}
-		return;
-	}
+		return ;
+	y = start;
 	set_tex_params(&game->wall_tex, &game->raycast);
 	while (y <= end)
 	{
@@ -77,6 +69,9 @@ void	draw_stripe(t_game *game, int x, int start, int end)
 
 void get_wall_height(t_game *game, int x)
 {
+    if (!game->wall_tex.tex)
+        return;
+
     int line_h;
     int start;
     int end;
