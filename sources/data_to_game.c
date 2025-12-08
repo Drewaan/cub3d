@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   data_to_game.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/01 19:29:35 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/12/01 22:47:50 by vlorenzo         ###   ########.fr       */
+/*   Created: 2025/12/02 15:34:57 by aamaya-g          #+#    #+#             */
+/*   Updated: 2025/12/02 15:35:14 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-#include "../includes/parser.h"
 
 void	data_to_game(t_parser *p, t_game *g)
 {

@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse_color.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/01 19:28:16 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/12/01 22:05:04 by vlorenzo         ###   ########.fr       */
+/*   Created: 2025/11/24 19:35:11 by vlorenzo          #+#    #+#             */
+/*   Updated: 2025/12/02 15:40:20 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-#include "../includes/parser.h"
 
 static void	check_digits(char **p)
 {

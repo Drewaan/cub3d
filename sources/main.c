@@ -3,29 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/01 19:30:09 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/12/01 20:20:25 by vlorenzo         ###   ########.fr       */
+/*   Created: 2025/10/17 13:23:40 by aamaya-g          #+#    #+#             */
+/*   Updated: 2025/12/03 16:28:17 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/cub3d.h"
-#include "../../includes/parser.h"
+#include "../includes/cub3d.h"
 
 int	main(int argc, char **argv)
 {
 	t_game		game;
 	t_parser	parser;
 
+	// Opción: ./cub3D map.cub --no-mlx
+/* 	if (argc == 3 && strcmp(argv[2], "--no-mlx") == 0)
+		disable_mlx = 1; */
+
 	if (!check_args(argc, argv))
 		return (1);
+	(void)argc;
 	parser_init(&parser);
 	parse_file(&parser, argv[1]);
 	check_map_parser(&parser);
 	data_to_game(&parser, &game);
+	load_textures_from_parser(&game, &parser);
+
 	game.player.speed = 0.20;
 	game.player.rotate_speed = 0.08;
+
 	game.mlx = mlx_init(WIN_W, WIN_H, "cub3D", false);
 	if (!game.mlx)
 		error_exit("MLX init failed");

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   load_map_parser.c                                  :+:      :+:    :+:   */
+/*   map_loader.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/01 19:28:49 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/12/01 20:11:21 by vlorenzo         ###   ########.fr       */
+/*   Created: 2025/11/24 19:11:27 by vlorenzo          #+#    #+#             */
+/*   Updated: 2025/12/02 15:39:25 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/parser.h"
+#include "../includes/cub3d.h"
 
 static int	max_width(char **m)
 {

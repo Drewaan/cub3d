@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dup_map.c                                          :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/24 19:36:57 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/12/02 15:36:03 by aamaya-g         ###   ########.fr       */
+/*   Created: 2025/10/21 19:39:30 by aamaya-g          #+#    #+#             */
+/*   Updated: 2025/10/21 19:41:19 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-char	**dup_map(t_parser *p)
+int	get_rgba(int r, int g, int b, int a)
 {
-	char	**copy;
-	int		i;
+	return (r << 24 | g << 16 | b << 8 | a);
+}
 
-	copy = malloc(sizeof(char *) * (p->map_h + 1));
-	i = -1;
-	if (!copy)
-		error_exit("dup_map malloc");
-	while (++i < p->map_h)
-		copy[i] = ft_strdup(p->map[i]);
-	copy[i] = NULL;
-	return (copy);
+int	valid_char(char c)
+{
+	return (c == '0' || c == '1' || c == 'N' || c == 'S' || c == 'E'
+		|| c == 'W');
 }
