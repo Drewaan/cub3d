@@ -1,7 +1,7 @@
 NO ./textures/taquillas.png
-SO ./textures/ordenagailu.png
-WE ./textures/greca.png
-EA ./textures/suelo.png
+SO ./textures/greca.png
+WE ./textures/famewall.png
+EA ./textures/ordenagailu.png
 F 45,54,70
 C 20,20,20
 
