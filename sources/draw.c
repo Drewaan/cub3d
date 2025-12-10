@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 18:43:00 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/12/08 20:02:45 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/12/10 13:41:45 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ void	draw_stripe(t_game *game, int x, int start, int end)
 	}
 }
 
-void get_wall_height(t_game *game, int x)
+
+void	get_wall_height(t_game *game, int x)
 {
     if (!game->wall_tex.tex)
         return;

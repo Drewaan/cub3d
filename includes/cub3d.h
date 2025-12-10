@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 13:23:33 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/12/08 22:33:48 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/12/10 13:46:24 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ typedef struct s_color
 	int alpha;
 }	t_color;
 
-uint32_t	get_rgba(int r, int g, int b, int a);
 
 /* ---------------- TEXTURES ---------------- */
 typedef struct s_tex
@@ -78,7 +77,7 @@ typedef struct s_raycast
 /* ---------------- PLAYER ---------------- */
 typedef struct s_player
 {
-    double  pos_x;
+	double  pos_x;
     double  pos_y;
     double  dir_x;
     double  dir_y;
@@ -124,6 +123,10 @@ int				validate_map(t_map *map);
 void			normalize_map(t_map *map);
 int set_player_pos(t_game *g, char c, int y, int x);
 
+// UTILS =========================================================
+
+uint32_t	get_rgba(int r, int g, int b, int a);
+int		valid_char(char c);
 
 /* ---------------- TEXTURE UTILS ---------------- */
 mlx_texture_t	*load_texture(char *path);

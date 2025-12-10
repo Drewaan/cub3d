@@ -3,6 +3,10 @@
         "cub3d.h": "c",
         "mlx42.h": "c",
         "libft.h": "c",
+<<<<<<< HEAD
         "random": "c"
+=======
+        "types.h": "c"
+>>>>>>> drew
     }
 }

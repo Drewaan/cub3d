@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 13:23:40 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/12/08 21:56:20 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/12/10 13:49:39 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,12 @@ static int	setup(t_game *game, const char *file)
 
 int	main(int argc, char **argv)
 {
-	t_game	game;
+	t_game		game;
+	t_parser	parser;
+
+	// Opción: ./cub3D map.cub --no-mlx
+/* 	if (argc == 3 && strcmp(argv[2], "--no-mlx") == 0)
+		disable_mlx = 1; */
 
 	if (argc != 2)
 		return (ft_printf("Uso: ./cub3D <map.cub>\n"), 1);

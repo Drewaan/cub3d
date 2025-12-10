@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_map.c                                         :+:      :+:    :+:   */
+/*   dup_map.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/08 16:05:12 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/12/08 17:35:33 by vlorenzo         ###   ########.fr       */
+/*   Created: 2025/11/24 19:36:57 by vlorenzo          #+#    #+#             */
+/*   Updated: 2025/12/02 15:36:03 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-void	init_map(t_map *map)
+char	**dup_map(t_parser *p)
 {
-	map->map_array = NULL;
-	map->width = 0;
-	map->height = 0;
-}
+	char	**copy;
+	int		i;
 
-int	valid_char(char c)
-{
-	return (c == '0' || c == '1' || c == 'N' || c == 'S' || c == 'E'
-		|| c == 'W');
+	copy = malloc(sizeof(char *) * (p->map_h + 1));
+	i = -1;
+	if (!copy)
+		error_exit("dup_map malloc");
+	while (++i < p->map_h)
+		copy[i] = ft_strdup(p->map[i]);
+	copy[i] = NULL;
+	return (copy);
 }
