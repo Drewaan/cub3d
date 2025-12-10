@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   texture.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 19:36:47 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/12/03 16:27:16 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/12/10 17:44:53 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-t_color	get_texture_pixel(mlx_texture_t *texture, int x, int y)
+t_color	px_tx(mlx_texture_t *texture, int x, int y)
 {
 	t_color	color;
 	uint8_t	*pixel;

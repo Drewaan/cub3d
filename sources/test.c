@@ -11,7 +11,7 @@ static inline uint32_t rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 	return ((uint32_t)r << 24) | ((uint32_t)g << 16) | ((uint32_t)b << 8) | (uint32_t)a;
 }
 
-t_color get_texture_pixel(mlx_texture_t *texture, int x, int y)
+t_color px_tx(mlx_texture_t *texture, int x, int y)
 {
 	t_color color;
 	uint8_t *pixel;
@@ -225,7 +225,7 @@ void raycast_frame(t_game *game)
 				if (tex_y < 0) tex_y = 0;
 				if (tex_y >= (int)game->wall_tex.tex->height) tex_y = game->wall_tex.tex->height - 1;
 
-				t_color px = get_texture_pixel(game->wall_tex.tex, game->wall_tex.tex_x, tex_y);
+				t_color px = px_tx(game->wall_tex.tex, game->wall_tex.tex_x, tex_y);
 				color = rgba((uint8_t)px.red, (uint8_t)px.green, (uint8_t)px.blue, (uint8_t)px.alpha);
 
 				game->wall_tex.tex_pos += game->wall_tex.tex_step;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 16:40:44 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/12/10 16:39:08 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/12/10 17:51:37 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,6 @@ int	check_args(int argc, char **argv)
 	return (1);
 }
 
-static int	is_valid(char c)
-{
-	return (c == '0' || c == '1' || c == 'N' || c == 'S' || c == 'E' || c == 'W'
-		|| c == ' ');
-}
-
 static void	locate_player(t_parser *p)
 {
 	int	i;
@@ -52,11 +46,11 @@ static void	locate_player(t_parser *p)
 	int	player_count;
 
 	player_count = 0;
-	i = 0;
-	while (i < p->map_h)
+	i = -1;
+	while (++i < p->map_h)
 	{
-		j = 0;
-		while (j < p->map_w)
+		j = -1;
+		while (++j < p->map_w)
 		{
 			if (ft_strchr("NSEW", p->map[i][j]))
 			{
@@ -68,9 +62,7 @@ static void	locate_player(t_parser *p)
 				p->player_dir = p->map[i][j];
 				p->map[i][j] = '0';
 			}
-			j++;
 		}
-		i++;
 	}
 	if (player_count == 0)
 		error_exit("Error: No player found");
@@ -96,7 +88,6 @@ static void	check_borders(t_parser *p)
 	int	i;
 	int	j;
 
-	/* Verificar primera y última fila */
 	i = 0;
 	while (i < p->map_w)
 	{
@@ -106,8 +97,6 @@ static void	check_borders(t_parser *p)
 			error_exit("Error: Map not closed (bottom border)");
 		i++;
 	}
-
-	/* Verificar primera y última columna */
 	j = 0;
 	while (j < p->map_h)
 	{
@@ -125,7 +114,6 @@ void	check_map_parser(t_parser *p)
 	int		i;
 	int		j;
 
-	/* Verificar caracteres válidos */
 	i = 0;
 	while (i < p->map_h)
 	{
@@ -138,14 +126,8 @@ void	check_map_parser(t_parser *p)
 		}
 		i++;
 	}
-
-	/* Localizar jugador y verificar que sea único */
 	locate_player(p);
-
-	/* Verificar bordes */
 	check_borders(p);
-
-	/* Flood fill para verificar cierre */
 	copy = dup_map(p);
 	flood(copy, p->player_x, p->player_y, p);
 	free_split(copy);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_map_parser.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 19:11:27 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/12/10 16:09:59 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/12/10 18:03:03 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static int	is_empty_line(char *line)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] != ' ' && line[i] != '\t' && line[i] != '\n' && line[i] != '\r')
+		if (line[i] != ' ' && line[i] != '\t' && line[i] != '\n'
+			&& line[i] != '\r')
 			return (0);
 		i++;
 	}
@@ -68,10 +69,8 @@ static int	count_map_lines(char **m)
 	count = 0;
 	while (m[count] && !is_empty_line(m[count]))
 		count++;
-	
 	if (count == 0)
 		error_exit("Error: Empty map");
-	
 	return (count);
 }
 
@@ -82,18 +81,14 @@ void	load_map_parser(t_parser *p, char **m)
 
 	if (!m || !m[0])
 		error_exit("Error: No map data");
-
 	h = count_map_lines(m);
 	p->map_h = h;
 	p->map_w = max_width(m);
-	
 	if (p->map_h < 3 || p->map_w < 3)
 		error_exit("Error: Map too small");
-	
 	p->map = malloc(sizeof(char *) * (h + 1));
 	if (!p->map)
 		error_exit("map malloc");
-
 	i = 0;
 	while (i < h)
 	{
