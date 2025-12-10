@@ -6,7 +6,7 @@
 /*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 13:23:40 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/12/03 16:28:17 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/12/10 16:40:23 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int	main(int argc, char **argv)
 	(void)argc;
 	parser_init(&parser);
 	parse_file(&parser, argv[1]);
-	check_map_parser(&parser);
 	data_to_game(&parser, &game);
 	load_textures_from_parser(&game, &parser);
 
