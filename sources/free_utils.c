@@ -6,7 +6,7 @@
 /*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 15:54:02 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/12/02 15:37:49 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/12/10 19:59:54 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void	game_over(t_game *g)
 {
 	if (!g)
 		return ;
+	if (g->map.map_array)
+		free_split(g->map.map_array);
 	if (g->img)
 		mlx_delete_image(g->mlx, g->img);
 	if (g->textures.north)

@@ -1,0 +1,58 @@
+{
+    ignore_dl_open_leaks
+    Memcheck:Leak
+    ...
+    fun:dlopen*
+}
+
+{
+    ignore_dl_find_object
+    Memcheck:Leak
+    ...
+    fun:_dl_find_object_update
+}
+
+{
+    ignore_dl_open_errors
+    Memcheck:Addr8
+    ...
+    fun:_dl_*
+}
+
+{
+    ignore_strncmp_dl
+    Memcheck:Addr8
+    fun:strncmp
+    ...
+    fun:*dl*
+}
+
+{
+    ignore_glfw_leaks
+    Memcheck:Leak
+    ...
+    obj:*/libglfw*
+}
+
+{
+    ignore_gl_leaks
+    Memcheck:Leak
+    ...
+    obj:*/libGL*
+}
+
+{
+    ignore_nvidia_leaks
+    Memcheck:Leak
+    ...
+    obj:*/nvidia*
+}
+
+{
+    ignore_mesa_leaks
+    Memcheck:Leak
+    ...
+    obj:*/mesa*
+}
+
+// valgrind --suppressions=mlx42.supp --leak-check=full ./cub3D maps/map2.cub

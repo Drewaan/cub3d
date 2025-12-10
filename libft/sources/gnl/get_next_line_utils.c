@@ -6,7 +6,7 @@
 /*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 13:34:34 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/07/23 14:53:00 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/12/10 19:59:51 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,20 @@ char	*ft_strjoin_special(char const *s1, char const *s2, int bytes_read)
 char	*ft_strchr_gnl(const char *s, int c)
 {
 	char	*temp;
-	int		len;
 	int		i;
 
-	len = BUFFER_SIZE;
+	if (!s)
+		return (NULL);
 	temp = (char *)s;
-	i = -1;
-	while (++i <= len)
+	i = 0;
+	while (temp[i])
+	{
 		if (temp[i] == (char)c)
 			return (&temp[i]);
+		i++;
+	}
+	if ((char)c == '\0')
+		return (&temp[i]);
 	return (NULL);
 }
 
