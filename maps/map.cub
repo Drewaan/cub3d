@@ -1,7 +1,7 @@
-NO ./textures/limonagrio.png
-SO ./textures/champi.png
-WE ./textures/planta.png
-EA ./textures/cerezo.png
+NO ./textures/taquillas.png
+SO ./textures/ordenagailu.png
+WE ./textures/greca.png
+EA ./textures/suelo.png
 F 45,54,70
 C 20,20,20
 
