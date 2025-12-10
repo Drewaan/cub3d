@@ -3,47 +3,45 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 19:39:30 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/12/10 17:59:36 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/12/10 18:36:57 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-
-void	get_wall_height(t_game *game, int x)
-{
-	int	line_h;
-	int	wall_start;
-	int	wall_end;
-
-	line_h = (int)(WIN_H / game->raycast.wall_dist);
-	wall_start = -line_h / 2 + WIN_H / 2;
-	if (wall_start < 0)
-		wall_start = 0;
-	wall_end = line_h / 2 + WIN_H / 2;
-	if (wall_end >= WIN_H)
-		wall_end = WIN_H - 1;
-	game->wall_tex.tex_step = 1.0 * (game->textures.north->height - 1) / line_h;
-	game->wall_tex.tex_pos = (wall_start - WIN_H / 2 + line_h / 2)
-		* game->wall_tex.tex_step;
-	draw_stripe(game, x, wall_start, wall_end);
-}
-
-int	is_valid(char c)
-{
-	return (c == '0' || c == '1' || c == 'N' || c == 'S' || c == 'E' || c == 'W'
-		|| c == ' ');
-}
 
 int	get_rgba(int r, int g, int b, int a)
 {
 	return (r << 24 | g << 16 | b << 8 | a);
 }
 
-int	valid_char(char c)
+int	is_map_char(char c)
 {
-	return (c == '0' || c == '1' || c == 'N' || c == 'S' || c == 'E'
-		|| c == 'W');
+	return (c == '0' || c == '1' || c == 'N' || c == 'S'
+		|| c == 'E' || c == 'W' || c == ' ' || c == '\t');
+}
+
+int	is_ident(char *l)
+{
+	return (!ft_strncmp(l, "NO ", 3) || !ft_strncmp(l, "SO ", 3)
+		|| !ft_strncmp(l, "WE ", 3) || !ft_strncmp(l, "EA ", 3)
+		|| !ft_strncmp(l, "F ", 2) || !ft_strncmp(l, "C ", 2));
+}
+
+int	is_empty_line(char *ln)
+{
+	int	i;
+
+	if (!ln || !*ln)
+		return (1);
+	i = 0;
+	while (ln[i])
+	{
+		if (ln[i] != ' ' && ln[i] != '\t' && ln[i] != '\n' && ln[i] != '\r')
+			return (0);
+		i++;
+	}
+	return (1);
 }

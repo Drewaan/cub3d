@@ -6,13 +6,13 @@
 /*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 19:34:42 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/12/10 16:57:54 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/12/10 18:48:10 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-static int	count_lines(char *str)
+int	count_lines(char *str)
 {
 	int	count;
 	int	i;
@@ -30,7 +30,7 @@ static int	count_lines(char *str)
 	return (count);
 }
 
-static char	*get_line_from_str(char *str, int *pos)
+char	*get_line_from_str(char *str, int *pos)
 {
 	int		start;
 	int		len;
@@ -53,7 +53,7 @@ static char	*get_line_from_str(char *str, int *pos)
 	return (line);
 }
 
-static char	**split_preserving_empty(char *str)
+char	**split_preserving_empty(char *str)
 {
 	char	**out;
 	int		line_count;

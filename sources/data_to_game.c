@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   data_to_game.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 15:34:57 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/12/10 17:56:57 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/12/10 18:40:49 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-static void	copy_map(t_parser *p, t_game *g)
+void	copy_map(t_parser *p, t_game *g)
 {
 	int	i;
 
@@ -30,7 +30,7 @@ static void	copy_map(t_parser *p, t_game *g)
 	g->map.map_array[i] = NULL;
 }
 
-static void	set_player_dir(t_game *g, char dir)
+void	set_player_dir(t_game *g, char dir)
 {
 	if (dir == 'N')
 	{
@@ -54,7 +54,7 @@ static void	set_player_dir(t_game *g, char dir)
 	}
 }
 
-static void	set_player_plane(t_game *g, char dir)
+void	set_player_plane(t_game *g, char dir)
 {
 	if (dir == 'N')
 	{

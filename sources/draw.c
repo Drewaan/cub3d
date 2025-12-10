@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 18:43:00 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/12/10 17:59:19 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/12/10 18:44:16 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	dim_color(t_color *color, double dist)
 	return (new_color);
 }
 
-static void	draw_empty_stripe(t_game *game, int x, int start, int end)
+void	draw_empty_stripe(t_game *game, int x, int start, int end)
 {
 	int	y;
 
@@ -55,7 +55,7 @@ static void	draw_empty_stripe(t_game *game, int x, int start, int end)
 	}
 }
 
-static void	draw_textured_stripe(t_game *game, int x, int start, int end)
+void	textured_stripe(t_game *game, int x, int start, int end)
 {
 	int		y;
 	int		dimmed;
@@ -84,5 +84,5 @@ void	draw_stripe(t_game *game, int x, int start, int end)
 		return ;
 	}
 	set_tex_params(&game->wall_tex, &game->raycast);
-	draw_textured_stripe(game, x, start, end);
+	textured_stripe(game, x, start, end);
 }

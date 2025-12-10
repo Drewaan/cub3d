@@ -1,11 +1,11 @@
 # **************************************************************************** #
 # DIRECTORIES
-SRC_DIR			:= sources/
-INC_DIR			:= includes/
-OBJ_DIR			:= obj/
-LIBFT_DIR		:= ./libft
-MLX_DIR			:= ./MLX42
-MLX_BUILD		:= $(MLX_DIR)/build
+SRC_DIR		:= sources/
+INC_DIR		:= includes/
+OBJ_DIR		:= obj/
+LIBFT_DIR	:= ./libft
+MLX_DIR		:= ./MLX42
+MLX_BUILD	:= $(MLX_DIR)/build
 
 LIBFT_INC_DIR	:= $(LIBFT_DIR)/include/
 
@@ -29,6 +29,7 @@ SRCS_FILES =	check_utils.c \
 				main.c \
 				parse_color.c \
 				parse_file.c \
+				parse_textures.c \
 				raycast.c \
 				read_file_to_array.c \
 				texture.c \
@@ -42,17 +43,20 @@ DEPS	:= $(OBJS:.o=.d)
 # **************************************************************************** #
 # COMPILER
 CC		:= cc
-CFLAGS	:= -Wall -Wextra -Werror -MMD -MP -g
+CFLAGS	:= -Wall -Wextra -Werror -g
+CFLAGS	+= -MMD -MP
 IFLAGS	:= -I$(INC_DIR) -I$(LIBFT_INC_DIR) -I$(MLX_DIR)/include
 LDFLAGS	:= $(LIBFT) $(MLX_LIB) -ldl -lglfw -pthread -lm
 
 # **************************************************************************** #
-# COLORES BONITOS
+# COLOURS: BOLD RGBYW
 BR	= \033[1;31m
 BG	= \033[1;32m
 BB	= \033[1;34m
 BY	= \033[1;33m
 BW	= \033[1;37m
+
+# NO COLOR and CLEAR LINE
 NC	= \033[0;39m
 CL	= \033[2K
 
@@ -66,16 +70,16 @@ all: libmlx libft $(NAME)
 # **************************************************************************** #
 # COMPILAR BIBLIOTECAS
 libft:
-	@echo "$(BB)[LIBFT]$(NC) Compilando..."
-	@$(MAKE) -C $(LIBFT_DIR) > /dev/null
+	@$(MAKE) -C $(LIBFT_DIR) --no-print-directory
 
 libmlx:
 	@if [ ! -d "$(MLX_BUILD)" ]; then \
-		echo "$(BB)[MLX42]$(NC) Creando build..."; \
+		printf "%b" "-> $(BW)[MLX42]:\t$(BB)Creando build...$(NC)\r"; \
 		cmake -S $(MLX_DIR) -B $(MLX_BUILD) > /dev/null; \
 	fi
+	@printf "%b" "-> $(BW)[MLX42]:\t$(BB)Compilando...$(NC)\r"
 	@cmake --build $(MLX_BUILD) -j4 > /dev/null
-	@echo "$(BG)[MLX42] Compilada con éxito ✅$(NC)"
+	@printf "%b" "$(CL)-> $(BW)[MLX42]:\t$(BG)Compilada con éxito ✅$(NC)\n"
 
 # **************************************************************************** #
 # COMPILAR PROYECTO
@@ -100,7 +104,7 @@ $(OBJ_DIR):
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
 	@mkdir -p $(dir $@)
-	@printf "%b" "$(CL) -> $(BW)[$(NAME)]:\t$(NC)$<\r"
+	@printf "%b" "$(CL) -> $(BW)[$(NAME)]:\t$(BB)Compiling: $(NC)$<\r"
 	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
 
 # **************************************************************************** #
@@ -111,7 +115,8 @@ clean:
 	@printf "%b" "$(CL) -> $(BW)[$(NAME)]:\t$(BG)Objetos limpiados ❎$(NC)\n"
 
 fclean:
-	@$(MAKE) -sC $(LIBFT_DIR) fclean
+	@$(MAKE) clean > /dev/null
+	@$(MAKE) fclean -sC $(LIBFT_DIR)
 	@rm -rf $(NAME) $(OBJ_DIR) $(MLX_BUILD)
 	@printf "%b" "$(CL) -> $(BW)[$(NAME)]:\t$(BG)Proyecto limpiado 🧹$(NC)\n"
 

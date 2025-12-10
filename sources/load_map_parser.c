@@ -3,33 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   load_map_parser.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 19:11:27 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/12/10 18:03:03 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/12/10 18:44:59 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-static int	is_empty_line(char *line)
-{
-	int	i;
-
-	if (!line || !*line)
-		return (1);
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] != ' ' && line[i] != '\t' && line[i] != '\n'
-			&& line[i] != '\r')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-static int	max_width(char **m)
+int	max_width(char **m)
 {
 	int	i;
 	int	max;
@@ -47,7 +30,7 @@ static int	max_width(char **m)
 	return (max);
 }
 
-static char	*pad(char *row, int w)
+char	*pad(char *row, int w)
 {
 	int		len;
 	char	*r;
@@ -62,7 +45,7 @@ static char	*pad(char *row, int w)
 	return (r);
 }
 
-static int	count_map_lines(char **m)
+int	count_map_lines(char **m)
 {
 	int	count;
 

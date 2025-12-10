@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 16:40:44 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/12/10 17:51:37 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/12/10 18:40:08 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	check_args(int argc, char **argv)
 	return (1);
 }
 
-static void	locate_player(t_parser *p)
+void	locate_player(t_parser *p)
 {
 	int	i;
 	int	j;
@@ -68,7 +68,7 @@ static void	locate_player(t_parser *p)
 		error_exit("Error: No player found");
 }
 
-static void	flood(char **m, int x, int y, t_parser *p)
+void	flood(char **m, int x, int y, t_parser *p)
 {
 	if (x < 0 || y < 0 || x >= p->map_h || y >= p->map_w)
 		error_exit("Error: Map not closed");
@@ -83,7 +83,7 @@ static void	flood(char **m, int x, int y, t_parser *p)
 	flood(m, x, y - 1, p);
 }
 
-static void	check_borders(t_parser *p)
+void	check_borders(t_parser *p)
 {
 	int	i;
 	int	j;
@@ -120,7 +120,7 @@ void	check_map_parser(t_parser *p)
 		j = 0;
 		while (j < p->map_w)
 		{
-			if (!is_valid(p->map[i][j]))
+			if (!is_map_char(p->map[i][j]))
 				error_exit("Error: Invalid character in map");
 			j++;
 		}
