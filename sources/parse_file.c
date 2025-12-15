@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse_file.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 19:09:01 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/12/10 18:46:06 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/12/15 21:39:50 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
 int	is_map_line(char *line)
 {
@@ -75,14 +75,19 @@ void	validate_map_block(char **lines, int start)
 
 void	check_all_textures(t_parser *p)
 {
-	if (!p->paths.no)
-		error_exit("Error: Missing NO texture");
-	if (!p->paths.so)
-		error_exit("Error: Missing SO texture");
-	if (!p->paths.we)
-		error_exit("Error: Missing WE texture");
-	if (!p->paths.ea)
-		error_exit("Error: Missing EA texture");
+	int	count;
+
+	count = 0;
+	if (p->paths.no)
+		count++;
+	if (p->paths.so)
+		count++;
+	if (p->paths.we)
+		count++;
+	if (p->paths.ea)
+		count++;
+	if (count != 4)
+		error_exit("Error: Exactly 4 textures required");
 	if (p->floor_color.red == -1)
 		error_exit("Error: Missing floor color");
 	if (p->ceil_color.red == -1)
@@ -96,6 +101,7 @@ void	parse_file(t_parser *p, char *path)
 	int		map_start;
 
 	lines = read_file_to_array(path);
+	gc_add(&g_game->gc, lines, (void (*)(void *))free_split);
 	i = 0;
 	while (lines[i] && !is_map_line(lines[i]))
 	{
@@ -110,5 +116,4 @@ void	parse_file(t_parser *p, char *path)
 	validate_map_block(lines, map_start);
 	load_map_parser(p, lines + map_start);
 	check_map_parser(p);
-	free_split(lines);
 }

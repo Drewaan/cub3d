@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   read_file_to_array.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 19:34:42 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/12/10 18:48:10 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/12/15 21:55:41 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
 int	count_lines(char *str)
 {
@@ -82,31 +82,38 @@ char	**split_preserving_empty(char *str)
 	return (out);
 }
 
-char	**read_file_to_array(char *path)
+static void	read_fd_into_accum(int fd, char **accum)
 {
-	int		fd;
 	char	*line;
-	char	*accum;
-	char	**out;
 	char	*tmp;
 
-	accum = ft_strdup("");
-	fd = open(path, O_RDONLY);
-	if (fd < 0)
-		error_exit("Cannot open .cub file");
 	line = get_next_line(fd);
 	while (line)
 	{
-		tmp = ft_strjoin(accum, line);
-		free(accum);
-		accum = tmp;
+		tmp = ft_strjoin(*accum, line);
+		free(*accum);
 		free(line);
+		if (!tmp)
+			error_exit("Error: join failed");
+		*accum = tmp;
 		line = get_next_line(fd);
 	}
 	close(fd);
-	if (!accum || !*accum)
-		error_exit("Empty .cub file");
+}
+
+char	**read_file_to_array(char *path)
+{
+	int		fd;
+	char	*accum;
+	char	**out;
+
+	fd = open_and_init(path, &accum);
+	read_fd_into_accum(fd, &accum);
+	if (!*accum)
+		error_exit("Error: Empty .cub file");
 	out = split_preserving_empty(accum);
 	free(accum);
+	if (!out)
+		error_exit("Error: split failed");
 	return (out);
 }

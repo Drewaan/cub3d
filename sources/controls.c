@@ -6,11 +6,11 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 17:51:54 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/12/10 17:54:42 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/12/14 17:51:36 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
 void	move_forward(t_game *game)
 {

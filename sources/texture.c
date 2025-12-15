@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   texture.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 19:36:47 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/12/10 18:36:18 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/12/14 19:13:44 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
 t_color	px_tx(mlx_texture_t *texture, int x, int y)
 {
@@ -45,16 +45,16 @@ void	get_wall_texture(t_game *game)
 	if (game->raycast.side_hit == 0)
 	{
 		if (game->raycast.ray_x > 0)
-			game->wall_tex.tex = game->textures.west;
-		else
 			game->wall_tex.tex = game->textures.east;
+		else
+			game->wall_tex.tex = game->textures.west;
 	}
 	else
 	{
 		if (game->raycast.ray_y > 0)
-			game->wall_tex.tex = game->textures.north;
-		else
 			game->wall_tex.tex = game->textures.south;
+		else
+			game->wall_tex.tex = game->textures.north;
 	}
 }
 

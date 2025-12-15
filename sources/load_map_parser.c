@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   load_map_parser.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 19:11:27 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/12/10 18:44:59 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/12/15 21:24:58 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
 int	max_width(char **m)
 {
@@ -57,26 +57,31 @@ int	count_map_lines(char **m)
 	return (count);
 }
 
-void	load_map_parser(t_parser *p, char **m)
+void	load_map_parser(t_parser *p, char **lines)
 {
-	int	h;
 	int	i;
 
-	if (!m || !m[0])
-		error_exit("Error: No map data");
-	h = count_map_lines(m);
-	p->map_h = h;
-	p->map_w = max_width(m);
-	if (p->map_h < 3 || p->map_w < 3)
-		error_exit("Error: Map too small");
-	p->map = malloc(sizeof(char *) * (h + 1));
+	p->map_h = 0;
+	while (lines[p->map_h])
+		p->map_h++;
+	p->map = malloc(sizeof(char *) * (p->map_h + 1));
 	if (!p->map)
-		error_exit("map malloc");
+		error_exit("Malloc failed loading map");
+	gc_add(&g_game->gc, p->map, (void (*)(void *))free_split);
 	i = 0;
-	while (i < h)
+	while (i < p->map_h)
 	{
-		p->map[i] = pad(m[i], p->map_w);
+		p->map[i] = ft_strdup(lines[i]);
+		if (!p->map[i])
+			error_exit("Malloc failed duplicating map");
 		i++;
 	}
-	p->map[h] = NULL;
+	p->map[i] = NULL;
+	p->map_w = 0;
+	i = 0;
+	while (i < p->map_h)
+	{
+		if ((int)ft_strlen(p->map[i]) > p->map_w)
+			p->map_w = ft_strlen(p->map[i++]);
+	}
 }

@@ -6,11 +6,24 @@
 /*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 19:40:10 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/12/10 18:02:40 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/12/15 21:57:21 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
+
+int	open_and_init(char *path, char **accum)
+{
+	int	fd;
+
+	*accum = ft_strdup("");
+	if (!*accum)
+		error_exit("Error: malloc error");
+	fd = open(path, O_RDONLY);
+	if (fd < 0)
+		error_exit("Error: Cannot open .cub file");
+	return (fd);
+}
 
 void	set_plane(t_player *player, char dir)
 {

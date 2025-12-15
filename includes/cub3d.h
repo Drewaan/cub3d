@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 13:23:33 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/12/10 18:49:44 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/12/15 21:56:25 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,58 +16,59 @@
 # include "../MLX42/include/MLX42/MLX42.h"
 # include "../libft/include/libft.h"
 
+/* ================================ DEFINES ================================= */
 # define WIN_W 1366
 # define WIN_H 768
 # define TILE 10
 
+/* ================================ GLOBAL ================================== */
+typedef struct s_game	t_game;
+extern t_game			*g_game;
+
+/* =========================== GARBAGE COLLECTOR ============================ */
+typedef struct s_gc_node
+{
+	void				*ptr;
+	void				(*del)(void *);
+	struct s_gc_node	*next;
+}	t_gc_node;
+
+typedef struct s_gc
+{
+	t_gc_node	*head;
+}	t_gc;
+
+/* =============================== COLORS ================================== */
 typedef struct s_color
 {
-	int				red;
-	int				green;
-	int				blue;
-	int				alpha;
-}					t_color;
+	int	red;
+	int	green;
+	int	blue;
+	int	alpha;
+}	t_color;
 
-typedef struct s_data
-{
-	char			*north;
-	char			*south;
-	char			*west;
-	char			*east;
-	t_color			floor;
-	t_color			ceiling;
-	int				map_start;
-	int				map_lines;
-}					t_data;
-
+/* =============================== PLAYER ================================== */
 typedef struct s_player
 {
-	double			pos_x;
-	double			pos_y;
-	double			dir_x;
-	double			dir_y;
-	double			plane_x;
-	double			plane_y;
-	double			speed;
-	double			rotate_speed;
-}					t_player;
+	double	pos_x;
+	double	pos_y;
+	double	dir_x;
+	double	dir_y;
+	double	plane_x;
+	double	plane_y;
+	double	speed;
+	double	rotate_speed;
+}	t_player;
 
+/* ================================ MAP ==================================== */
 typedef struct s_map
 {
-	char			**map_array;
-	int				map_w;
-	int				map_h;
-}					t_map;
+	char	**map_array;
+	int		map_w;
+	int		map_h;
+}	t_map;
 
-typedef struct s_wall_tex
-{
-	mlx_texture_t	*tex;
-	int				tex_x;
-	int				tex_y;
-	double			tex_pos;
-	double			tex_step;
-}					t_wall_tex;
-
+/* ============================== TEXTURES ================================= */
 typedef struct s_texture
 {
 	mlx_texture_t	*north;
@@ -76,65 +77,84 @@ typedef struct s_texture
 	mlx_texture_t	*east;
 	int				floor_color;
 	int				ceiling_color;
-}					t_texture;
+}	t_texture;
 
+/* ============================== WALL TEX ================================= */
+typedef struct s_wall_tex
+{
+	mlx_texture_t	*tex;
+	int				tex_x;
+	int				tex_y;
+	double			tex_pos;
+	double			tex_step;
+}	t_wall_tex;
+
+/* ================================ RAY ==================================== */
 typedef struct s_ray
 {
-	double			camera;
-	double			ray_x;
-	double			ray_y;
-	double			side_dist_x;
-	double			side_dist_y;
-	double			delta_dist_x;
-	double			delta_dist_y;
-	double			wall_dist;
-	double			wall_x;
-	int				map_x;
-	int				map_y;
-	int				step_x;
-	int				step_y;
-	int				hit;
-	int				side_hit;
-}					t_ray;
+	double	camera;
+	double	ray_x;
+	double	ray_y;
+	double	side_dist_x;
+	double	side_dist_y;
+	double	delta_dist_x;
+	double	delta_dist_y;
+	double	wall_dist;
+	double	wall_x;
+	int		map_x;
+	int		map_y;
+	int		step_x;
+	int		step_y;
+	int		hit;
+	int		side_hit;
+}	t_ray;
 
-typedef struct s_game
-{
-	mlx_t			*mlx;
-	mlx_image_t		*img;
-	t_map			map;
-	t_player		player;
-	t_texture		textures;
-	t_wall_tex		wall_tex;
-	t_ray			raycast;
-}					t_game;
-
+/* ================================ PATHS ================================== */
 typedef struct s_paths
 {
-	char			*no;
-	char			*so;
-	char			*we;
-	char			*ea;
-}					t_paths;
+	char	*no;
+	char	*so;
+	char	*we;
+	char	*ea;
+}	t_paths;
 
+/* =============================== PARSER ================================== */
 typedef struct s_parser
 {
-	t_paths			paths;
-	t_color			floor_color;
-	t_color			ceil_color;
-	char			**map;
-	int				map_w;
-	int				map_h;
-	int				player_x;
-	int				player_y;
-	char			player_dir;
-	double			dir_x;
-	double			dir_y;
-	double			plane_x;
-	double			plane_y;
-}					t_parser;
+	t_paths	paths;
+	t_color	floor_color;
+	t_color	ceil_color;
+	char	**map;
+	int		map_w;
+	int		map_h;
+	int		player_x;
+	int		player_y;
+	char	player_dir;
+	double	dir_x;
+	double	dir_y;
+	double	plane_x;
+	double	plane_y;
+}	t_parser;
+
+/* ================================ GAME =================================== */
+typedef struct s_game
+{
+	void		*mlx;
+	void		*img;
+	t_map		map;
+	t_player	player;
+	t_texture	textures;
+	t_ray		raycast;
+	t_wall_tex	wall_tex;
+	t_gc		gc;
+}	t_game;
+
+//	GARBAGE COLLECTOR ==================================================
+void			gc_init(t_gc *gc);
+void			gc_add(t_gc *gc, void *ptr, void (*del)(void *));
+void			game_clear(t_game *game);
 
 // CHECK_UTILS =========================================================
-
 int				check_args(int argc, char **argv);
 void			locate_player(t_parser *p);
 void			flood(char **m, int x, int y, t_parser *p);
@@ -170,10 +190,8 @@ char			**dup_map(t_parser *p);
 
 // FREE_UTILS ========================================================
 
-void			free_parser(t_parser *p);
 void			error_exit(char *msg);
 void			free_split(char **arr);
-void			game_over(t_game *g);
 
 // HOOKS ==========================================================
 
@@ -191,7 +209,7 @@ void			parser_init(t_parser *p);
 int				max_width(char **m);
 char			*pad(char *row, int w);
 int				count_map_lines(char **m);
-void			load_map_parser(t_parser *p, char **m);
+void			load_map_parser(t_parser *p, char **lines);
 
 // PARSE_COLOR ======================================================
 
@@ -237,6 +255,7 @@ void			get_wall_height(t_game *game, int x);
 
 // UTILS ========================================================
 
+int				open_and_init(char *path, char **accum);
 int				get_rgba(int r, int g, int b, int a);
 int				is_map_char(char c);
 int				is_ident(char *l);

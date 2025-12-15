@@ -3,29 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 13:23:40 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/12/10 18:16:12 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/12/15 21:25:23 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
+
+t_game	*g_game = NULL;
 
 int	main(int argc, char **argv)
 {
 	t_game		game;
 	t_parser	parser;
 
+	g_game = &game;
+	gc_init(&game.gc);
 	if (!check_args(argc, argv))
 		return (1);
-	(void)argc;
 	parser_init(&parser);
 	parse_file(&parser, argv[1]);
 	data_to_game(&parser, &game);
 	load_textures_from_parser(&game, &parser);
-	game.player.speed = 0.20;
-	game.player.rotate_speed = 0.08;
 	game.mlx = mlx_init(WIN_W, WIN_H, "cub3D", false);
 	if (!game.mlx)
 		error_exit("MLX init failed");
@@ -34,7 +35,6 @@ int	main(int argc, char **argv)
 	mlx_loop_hook(game.mlx, main_hook, &game);
 	mlx_key_hook(game.mlx, key_hook, &game);
 	mlx_loop(game.mlx);
-	free_parser(&parser);
-	game_over(&game);
+	game_clear(&game);
 	return (0);
 }

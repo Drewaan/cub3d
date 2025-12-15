@@ -23,6 +23,7 @@ SRCS_FILES =	check_utils.c \
 				draw.c \
 				dup_map.c \
 				free_utils.c \
+				gc.c \
 				hooks.c \
 				initialize.c \
 				load_map_parser.c \

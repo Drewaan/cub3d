@@ -3,34 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   parse_textures.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 18:16:55 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/12/10 18:46:38 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/12/15 21:40:46 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
-
-void	parse_texture(t_parser *p, char *id, char **dst, char *line)
-{
-	char	*trimmed;
-
-	(void)p;
-	if (*dst)
-		error_exit(id);
-	trimmed = ft_strtrim(line, " \t\n");
-	if (trimmed)
-		*dst = trimmed;
-	else
-		*dst = ft_strdup(line);
-}
+#include "../../includes/cub3d.h"
 
 void	parse_color_line(t_color *c, char *line, char *err)
 {
 	if (c->red != -1)
 		error_exit(err);
 	parse_color(c, line);
+}
+
+void	parse_texture(t_parser *p, char *err, char **dst, char *line)
+{
+	char	*trimmed;
+
+	(void)p;
+	if (*dst)
+		error_exit(err);
+	trimmed = ft_strtrim(line, " \t\n");
+	if (!trimmed || !*trimmed)
+		error_exit("Invalid texture path");
+	*dst = trimmed;
+	gc_add(&g_game->gc, trimmed, free);
 }
 
 void	parse_ident_line(t_parser *p, char *l)
@@ -44,11 +44,9 @@ void	parse_ident_line(t_parser *p, char *l)
 	else if (!ft_strncmp(l, "EA ", 3))
 		parse_texture(p, "Error: Duplicate EA texture", &p->paths.ea, l + 3);
 	else if (!ft_strncmp(l, "F ", 2))
-		parse_color_line(&p->floor_color, l + 2,
-			"Error: Duplicate floor color");
+		parse_color_line(&p->floor_color, l + 2, "Error: Duplicate F color");
 	else if (!ft_strncmp(l, "C ", 2))
-		parse_color_line(&p->ceil_color, l + 2,
-			"Error: Duplicate ceiling color");
+		parse_color_line(&p->ceil_color, l + 2, "Error: Duplicate C color");
 }
 
 mlx_texture_t	*load_png_strict(char *path)

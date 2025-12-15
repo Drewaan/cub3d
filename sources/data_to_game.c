@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data_to_game.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 15:34:57 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/12/10 18:40:49 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/12/15 18:18:45 by vlorenzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	copy_map(t_parser *p, t_game *g)
 	g->map.map_array = malloc(sizeof(char *) * (p->map_h + 1));
 	if (!g->map.map_array)
 		error_exit("Malloc failed in copy_map");
+	gc_add(&g->gc, g->map.map_array,
+		(void (*)(void *))free_split);
 	i = 0;
 	while (i < p->map_h)
 	{
