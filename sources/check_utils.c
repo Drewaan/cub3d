@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 16:40:44 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/12/14 20:01:26 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/12/16 15:57:24 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,5 +130,4 @@ void	check_map_parser(t_parser *p)
 	check_borders(p);
 	copy = dup_map(p);
 	flood(copy, p->player_x, p->player_y, p);
-	free_split(copy);
 }

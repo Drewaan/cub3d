@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   gc.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 18:30:25 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/12/15 21:24:06 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/12/16 13:36:16 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,19 +40,20 @@ void	game_clear(t_game *game)
 	{
 		tmp = game->gc.head;
 		game->gc.head = tmp->next;
-		if (tmp->ptr)
-		{
+		if (tmp->ptr && tmp->del)
 			tmp->del(tmp->ptr);
-			tmp->ptr = NULL;
-		}
-		if (tmp)
-		{
-			tmp->del(tmp);
-			tmp = NULL;
-		}
+		free(tmp);
 	}
-	mlx_delete_texture(game->textures.north);
-	mlx_delete_texture(game->textures.south);
-	mlx_delete_texture(game->textures.west);
-	mlx_delete_texture(game->textures.east);
+	if (game->textures.north)
+		mlx_delete_texture(game->textures.north);
+	if (game->textures.south)
+		mlx_delete_texture(game->textures.south);
+	if (game->textures.west)
+		mlx_delete_texture(game->textures.west);
+	if (game->textures.east)
+		mlx_delete_texture(game->textures.east);
+	if (game->img)
+		mlx_delete_image(game->mlx, game->img);
+	if (game->mlx)
+		mlx_terminate(game->mlx);
 }

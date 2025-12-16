@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_map_parser.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlorenzo <vlorenzo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 19:11:27 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/12/15 21:24:58 by vlorenzo         ###   ########.fr       */
+/*   Updated: 2025/12/16 13:55:44 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,12 @@ int	count_map_lines(char **m)
 void	load_map_parser(t_parser *p, char **lines)
 {
 	int	i;
+	int	width;
 
 	p->map_h = 0;
 	while (lines[p->map_h])
 		p->map_h++;
+	width = max_width(lines);
 	p->map = malloc(sizeof(char *) * (p->map_h + 1));
 	if (!p->map)
 		error_exit("Malloc failed loading map");
@@ -71,17 +73,11 @@ void	load_map_parser(t_parser *p, char **lines)
 	i = 0;
 	while (i < p->map_h)
 	{
-		p->map[i] = ft_strdup(lines[i]);
+		p->map[i] = pad(lines[i], width);
 		if (!p->map[i])
 			error_exit("Malloc failed duplicating map");
 		i++;
 	}
 	p->map[i] = NULL;
-	p->map_w = 0;
-	i = 0;
-	while (i < p->map_h)
-	{
-		if ((int)ft_strlen(p->map[i]) > p->map_w)
-			p->map_w = ft_strlen(p->map[i++]);
-	}
+	p->map_w = width;
 }
