@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_color.c                                      :+:      :+:    :+:   */
+/*   parse_color_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/24 19:35:11 by vlorenzo          #+#    #+#             */
-/*   Updated: 2025/12/17 18:26:30 by aamaya-g         ###   ########.fr       */
+/*   Created: 2025/12/16 17:17:44 by aamaya-g          #+#    #+#             */
+/*   Updated: 2025/12/17 18:27:51 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/cub3d.h"
+#include "../../includes/cub3d_bonus.h"
 
 static void	check_digits(char *str)
 {

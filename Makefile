@@ -1,8 +1,10 @@
 # **************************************************************************** #
 # DIRECTORIES
 SRC_DIR		:= sources/
+BONUS_DIR	:= bonus/
 INC_DIR		:= includes/
 OBJ_DIR		:= obj/
+OBJ_BONUS_DIR	:= obj_bonus/
 LIBFT_DIR	:= ./libft
 MLX_DIR		:= ./MLX42
 MLX_BUILD	:= $(MLX_DIR)/build
@@ -12,6 +14,7 @@ LIBFT_INC_DIR	:= $(LIBFT_DIR)/include/
 # **************************************************************************** #
 # PROJECT
 NAME		:= cub3D
+NAME_BONUS	:= cub3D_bonus
 LIBFT		:= $(LIBFT_DIR)/libft.a
 MLX_LIB		:= $(MLX_BUILD)/libmlx42.a
 
@@ -41,6 +44,32 @@ SRCS	:= $(addprefix $(SRC_DIR), $(SRCS_FILES))
 OBJS	:= $(addprefix $(OBJ_DIR), $(SRCS_FILES:.c=.o))
 DEPS	:= $(OBJS:.o=.d)
 
+# Bonus files
+SRCS_BONUS_FILES =	check_utils_bonus.c \
+					controls_bonus.c \
+					data_to_game_bonus.c \
+					draw_bonus.c \
+					dup_map_bonus.c \
+					free_utils_bonus.c \
+					gc_bonus.c \
+					hooks_bonus.c \
+					initialize_bonus.c \
+					load_map_parser_bonus.c \
+					main_bonus.c \
+					minimap_bonus.c \
+					minimap_utils_bonus.c \
+					parse_color_bonus.c \
+					parse_file_bonus.c \
+					parse_textures_bonus.c \
+					raycast_bonus.c \
+					read_file_to_array_bonus.c \
+					texture_bonus.c \
+					utils_bonus.c \
+
+SRCS_BONUS	:= $(addprefix $(BONUS_DIR), $(SRCS_BONUS_FILES))
+OBJS_BONUS	:= $(addprefix $(OBJ_BONUS_DIR), $(SRCS_BONUS_FILES:.c=.o))
+DEPS_BONUS	:= $(OBJS_BONUS:.o=.d)
+
 # **************************************************************************** #
 # COMPILER
 CC		:= cc
@@ -64,6 +93,7 @@ CL	= \033[2K
 # **************************************************************************** #
 # BUILD OPTIONS
 -include $(DEPS)
+-include $(DEPS_BONUS)
 
 # Default rule
 all: libmlx libft $(NAME)
@@ -108,21 +138,49 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
 	@printf "%b" "$(CL) -> $(BW)[$(NAME)]:\t$(BB)Compiling: $(NC)$<\r"
 	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
 
+$(OBJ_BONUS_DIR):
+	@mkdir -p $(OBJ_BONUS_DIR)
+
+$(OBJ_BONUS_DIR)%.o: $(BONUS_DIR)%.c | $(OBJ_BONUS_DIR)
+	@mkdir -p $(dir $@)
+	@printf "%b" "$(CL) -> $(BW)[$(NAME_BONUS)]:\t$(BB)Compiling: $(NC)$<\r"
+	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
+
+# **************************************************************************** #
+# BONUS
+bonus: libmlx libft $(NAME_BONUS)
+
+$(NAME_BONUS): $(OBJS_BONUS) $(LIBFT)
+	@$(CC) $(CFLAGS) $(OBJS_BONUS) $(LDFLAGS) -o $(NAME_BONUS)
+	@printf "%b" "$(CL) -> $(BW)[$(NAME_BONUS)]:\t$(BG)Compilación exitosa ✅$(NC)\n"
+	@echo "─────────────────────────────────────────────────────$(BY)"
+	@echo " ░▒▓██████▓▒░ ▒▓█▓▒  ▒▓█▓▒ ▒▓███████▓▒ ▒▓███████▓▒░ ▒▓███████▓▒░  "
+	@echo "░▒▓█▓▒░░▒▓█▓▒ ▒▓█▓▒  ▒▓█▓▒ ▒▓█▓▒  ▒▓█▓▒      ░▒▓█▓▒ ▒▓█▓▒  ▒▓█▓▒░ "
+	@echo "░▒▓█▓▒░       ▒▓█▓▒  ▒▓█▓▒ ▒▓█▓▒  ▒▓█▓▒      ░▒▓█▓▒ ▒▓█▓▒  ▒▓█▓▒░ "
+	@echo "░▒▓█▓▒░       ▒▓█▓▒  ▒▓█▓▒ ▒▓███████▓▒ ▒▓███████▓▒  ▒▓█▓▒  ▒▓█▓▒░ "
+	@echo "░▒▓█▓▒░       ▒▓█▓▒  ▒▓█▓▒ ▒▓█▓▒  ▒▓█▓▒      ░▒▓█▓▒ ▒▓█▓▒  ▒▓█▓▒░ "
+	@echo "░▒▓█▓▒░░▒▓█▓▒ ▒▓█▓▒  ▒▓█▓▒ ▒▓█▓▒  ▒▓█▓▒      ░▒▓█▓▒ ▒▓█▓▒  ▒▓█▓▒░ "
+	@echo " ░▒▓██████▓▒░ ░▒▓██████▓▒░ ▒▓███████▓▒ ▒▓███████▓▒░ ▒▓███████▓▒░  "
+	@echo "             by aamaya-g and vlorenzo 💪 $(BR)[BONUS]$(BY)"
+	@echo "$(NC)─────────────────────────────────────────────────────"
+
 # **************************************************************************** #
 # LIMPIEZA
 clean:
 	@$(MAKE) -sC $(LIBFT_DIR) clean
-	@rm -rf $(OBJ_DIR)
+	@rm -rf $(OBJ_DIR) $(OBJ_BONUS_DIR)
 	@printf "%b" "$(CL) -> $(BW)[$(NAME)]:\t$(BG)Objetos limpiados ❎$(NC)\n"
 
 fclean:
 	@$(MAKE) clean > /dev/null
 	@$(MAKE) fclean -sC $(LIBFT_DIR)
-	@rm -rf $(NAME) $(OBJ_DIR) $(MLX_BUILD)
+	@rm -rf $(NAME) $(NAME_BONUS) $(OBJ_DIR) $(OBJ_BONUS_DIR) $(MLX_BUILD)
 	@printf "%b" "$(CL) -> $(BW)[$(NAME)]:\t$(BG)Proyecto limpiado 🧹$(NC)\n"
 
 re: fclean all
 
+rebonus: fclean bonus
+
 # **************************************************************************** #
-.PHONY: all clean fclean re libmlx libft
+.PHONY: all clean fclean re rebonus libmlx libft bonus
 .DEFAULT_GOAL := all
