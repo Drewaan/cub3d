@@ -263,20 +263,19 @@ C 135,206,235
 ### 📸 Gameplay View
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Drewaan/cub3d/main/screenshots/gameplay_1.jpg" width="800" alt="Cub3D Gameplay 1">
+  <img src="https://raw.githubusercontent.com/Drewaan/cub3d/main/screenshots/gameplay_1.png" width="800" alt="Cub3D Gameplay 1">
 </p>
 
+
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Drewaan/cub3d/main/screenshots/gameplay_2.jpg" width="800" alt="Cub3D Gameplay 2">
+  <img src="https://raw.githubusercontent.com/Drewaan/cub3d/main/screenshots/gameplay_2.png" width="800" alt="Cub3D Gameplay 2">
 </p>
 
 ### Minimap (Bonus)
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Drewaan/cub3d/main/screenshots/minimap_detail.png" width="300" alt="Minimap Detail">
+  <img src="https://raw.githubusercontent.com/Drewaan/cub3d/main/screenshots/minimap_detail.png" width="200" alt="Minimap Detail">
 </p>
-
-> 💡 **Tip**: Create a `screenshots/` folder and add your captures. Then uncomment the image lines above.
 
 ---
 
