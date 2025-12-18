@@ -100,13 +100,13 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 # Rule to clean generated files
 clean:
 	@rm -rf $(OBJ_DIR)
-	@printf "%b" "$(CL) -> $(BW)[Libft]:\t\t$(BG)Object files cleaned\t❎$(NC)\n"
+	@printf "%b" "$(CL) -> $(BW)[Libft]:\t\t$(BG)Objetos limpiados ❎$(NC)\n"
 
 # Rule to clean generated files and the executablle
 fclean:
 	@$(MAKE) clean > /dev/null
 	@rm -rf $(NAME)
-	@printf "%b" "$(CL) -> $(BW)[Libft]:\t\t$(BG)Exe and objects cleaned\t❎$(NC)\n"
+	@printf "%b" "$(CL) -> $(BW)[Libft]:\t\t$(BG)Proyecto limpiado 🧹$(NC)\n"
 
 # Rule to recompile from zero. 
 re: fclean all
@@ -121,4 +121,4 @@ debug:
 .PHONY: all clean fclean re debug 
 .DEFAULT_GOAL := all
 
-# **************************************************************************** #
+# **************************************************************************** #⏎    

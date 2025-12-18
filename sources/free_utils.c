@@ -6,33 +6,33 @@
 /*   By: aamaya-g <aamaya-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 15:54:02 by aamaya-g          #+#    #+#             */
-/*   Updated: 2025/10/24 15:57:10 by aamaya-g         ###   ########.fr       */
+/*   Updated: 2025/12/16 14:50:50 by aamaya-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
-void	game_over(t_game *game)
+static void	gc_cleanup(void)
 {
-	int	i;
+	t_gc_node	*tmp;
 
-	i = 0;
-	while (i < game->map.map_h)
+	if (!g_game)
+		return ;
+	while (g_game->gc.head)
 	{
-		free(game->map.map_array[i]);
-		i++;
+		tmp = g_game->gc.head;
+		g_game->gc.head = tmp->next;
+		if (tmp->ptr && tmp->del)
+			tmp->del(tmp->ptr);
+		free(tmp);
 	}
-	free(game->map.map_array);
-	mlx_delete_texture(game->textures.north);
-	mlx_delete_texture(game->textures.south);
-	mlx_delete_texture(game->textures.west);
-	mlx_delete_texture(game->textures.east);
 }
 
-void	free_data(t_data *data)
+void	error_exit(char *msg)
 {
-	free(data->north);
-	free(data->south);
-	free(data->east);
-	free(data->west);
+	ft_putstr_fd("Error\n", 2);
+	if (msg)
+		ft_putendl_fd(msg, 2);
+	gc_cleanup();
+	exit(EXIT_FAILURE);
 }
